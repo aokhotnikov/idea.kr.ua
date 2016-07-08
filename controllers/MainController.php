@@ -80,11 +80,13 @@ class MainController extends Controller
 
 //  ------ 1 вариант с 4 таблицами  ------
         $selectTag = $activeTags !== 'all' ? ' and t.name = "'.$activeTags.'"' : '';
+
+
         $query = (new Query())
-            ->select('p.*, u.firstname')
+            ->select(['p.*', 'u.firstname', "GROUP_CONCAT(DISTINCT t.name ORDER BY t.name ASC SEPARATOR ',') as tags"])
             ->from('users u, posts p, tags t, tags_posts tp')
             ->where('p.user_id = u.id and p.id = tp.post_id and t.id = tp.tag_id '.$completed.$selectTag)
-            ->distinct()
+            ->groupBy('p.id')
             ->orderBy($sortName.' desc');
 
 //  ------ 2 вариант с двумя таблицами и ч/з like ------

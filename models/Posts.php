@@ -15,7 +15,6 @@ use yii\helpers\ArrayHelper;
  * @property integer $user_id
  * @property integer $like
  * @property integer $dislike
- * @property string $tags
  * @property integer $comments
  * @property string $text
  * @property integer $completed
@@ -38,7 +37,7 @@ class Posts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'short_text', 'date_publ', 'user_id', 'tags', 'text'], 'required'],
+            [['title', 'short_text', 'date_publ', 'user_id', 'text'], 'required'],
             [['date_publ'], 'safe'],
             [['user_id', 'like', 'dislike', 'comments', 'completed'], 'integer'],
             [['title'], 'string', 'max' => 128],
@@ -62,7 +61,6 @@ class Posts extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'like' => 'Like',
             'dislike' => 'Dislike',
-            'tags' => 'Tags',
             'comments' => 'Comments',
             'text' => 'Text',
             'completed' => 'Completed',
@@ -87,7 +85,7 @@ class Posts extends \yii\db\ActiveRecord
         $this->text = $formData["text"];
         $this->short_text = $this->makeShortText($this->text);
         $this->user_id = Yii::$app->user->identity->getId();
-        $this->tags = $this->addTags($formData["tags"]);
+        //$this->tags = $this->addTags($formData["tags"]);
 
         //echo '<pre>';print_r($formData["tags"]);echo '</pre>';die; // for debag
 

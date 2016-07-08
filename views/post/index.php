@@ -38,7 +38,8 @@ $this->params['activeTags'] = 'all';
                             class="votes-count"><?= $post["like"] + $post["dislike"] ?></span></p>
                 </div>
                 <div class="right-block">
-                    <a href="/post/<?= $post["id"] ?>" class="idea-name"><?= $post["title"] ?></a>
+
+                    <p class="idea-name"><?= $post["title"] ?></p>
 
                     <p class="small-p">Опубликовано: <?= $post["date_publ"] ?></p>
 
@@ -51,7 +52,7 @@ $this->params['activeTags'] = 'all';
                         foreach ($masTags as $tag) {
                             ?>
                             <li>
-                                <?= Html::a(str_replace (' ','+',$tag) , ['main/index', 'tag' => $tag]) ?>
+                                <?= Html::a($tag , ['main/index', 'tag' => $tag]) ?>
                             </li>
                             <?php
                         }

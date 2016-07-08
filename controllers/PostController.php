@@ -11,12 +11,11 @@ class PostController extends \yii\web\Controller
     {
         $id = Yii::$app->request->get('id');
         if($id) {
-
-            $query = (new Query())
-                ->select('posts.*, users.firstname')
-                ->from('users, posts')
-                ->where('posts.user_id = users.id and posts.id='.$id)
-                ->one();
+            $query = Yii::$app->db->createCommand('
+                select p.*, u.firstname, GROUP_CONCAT(DISTINCT t.name ORDER BY t.name ASC SEPARATOR ",") AS tags
+                from users u, posts p, tags t, tags_posts tp
+                where p.user_id = u.id and p.id = tp.post_id and t.id = tp.tag_id and p.id='.$id.' 
+			    group by p.id')->queryOne();
             //echo '<pre>';print_r($query);echo '</pre>';die; // for debag
             return $this->render('index', ['post' => $query]);
         }
