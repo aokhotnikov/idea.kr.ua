@@ -6,3 +6,4 @@
 !/models
 !/views
 !/web
+/config/db.php
