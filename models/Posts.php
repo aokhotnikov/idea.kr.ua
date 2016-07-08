@@ -18,7 +18,6 @@ use yii\helpers\ArrayHelper;
  * @property integer $comments
  * @property string $text
  * @property integer $completed
- *
  * @property TagsPosts[] $tagsPosts
  */
 class Posts extends \yii\db\ActiveRecord
@@ -42,7 +41,6 @@ class Posts extends \yii\db\ActiveRecord
             [['user_id', 'like', 'dislike', 'comments', 'completed'], 'integer'],
             [['title'], 'string', 'max' => 128],
             [['short_text'], 'string', 'max' => 500],
-            [['tags'], 'string', 'max' => 100],
             [['text'], 'string', 'max' => 3000],
             [['title'], 'unique'],
         ];
@@ -85,7 +83,6 @@ class Posts extends \yii\db\ActiveRecord
         $this->text = $formData["text"];
         $this->short_text = $this->makeShortText($this->text);
         $this->user_id = Yii::$app->user->identity->getId();
-        //$this->tags = $this->addTags($formData["tags"]);
 
         //echo '<pre>';print_r($formData["tags"]);echo '</pre>';die; // for debag
 
@@ -108,22 +105,5 @@ class Posts extends \yii\db\ActiveRecord
                 return $text = substr($text, 0, $i);
             }
         }
-    }
-
-    protected function addTags($arrayTags){
-        $strTags = '';
-        $tags = Tags::find()->orderBy('id')->all();
-        $category = ArrayHelper::getColumn($tags, 'name');
-        //echo '<pre>';print_r($category);echo '</pre>';die; // for debag
-
-        foreach ($arrayTags as $val){
-            if ($strTags === '')
-                $strTags .= $category[$val];
-            else {
-                $strTags .= ",".$category[$val];
-            }
-        }
-
-        return $strTags;
     }
 }

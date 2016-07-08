@@ -1,0 +1,8 @@
+# Ignore all
+
+# except these files
+!/config
+!/controllers
+!/models
+!/views
+!/web
