@@ -4,6 +4,6 @@ return [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=localhost;dbname=idea_kr_ua',
     'username' => 'root',
-    'password' => 'fbi',
+    'password' => '',
     'charset' => 'utf8',
 ];
