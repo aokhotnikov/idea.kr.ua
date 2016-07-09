@@ -61,53 +61,24 @@ class MainController extends Controller
      */
     public function actionIndex($tag = 'all', $sort = 1)
     {
-        $activeTags = $tag;
-        $sortName = 'date_publ';
-        $completed = '';
-        $activeLabelIdeaSort = $sort;
-
-        //echo '<pre>';print_r($_GET);echo '</pre>';die; // for debag
-
-        if ($sort == 2) {
-            $sortName = 'like';
-            $activeLabelIdeaSort = 2;
-        }
-        if ($sort == 3) {
-            $sortName = 'completed';
-            $completed = 'and completed = 1';
-            $activeLabelIdeaSort = 3;
-        }
-
-//  ------ 1 вариант с 4 таблицами  ------
-        $selectTag = $activeTags !== 'all' ? ' and t.name = "'.$activeTags.'"' : '';
-
-
         $query = (new Query())
             ->select(['p.*', 'u.firstname', "GROUP_CONCAT(DISTINCT t.name ORDER BY t.name ASC SEPARATOR ',') as tags"])
             ->from('users u, posts p, tags t, tags_posts tp')
-            ->where('p.user_id = u.id and p.id = tp.post_id and t.id = tp.tag_id '.$completed.$selectTag)
-            ->groupBy('p.id')
-            ->orderBy($sortName.' desc');
+            ->where('p.user_id = u.id and p.id = tp.post_id and t.id = tp.tag_id')
+            ->groupBy('p.id');
 
-//  ------ 2 вариант с двумя таблицами и ч/з like ------
-//        $selectTag = $activeTags !== 'all' ? ' and tags like "%'.$activeTags.'%"' : '';
-//        $query = (new Query())
-//            ->select('posts.*, users.firstname')
-//            ->from('users, posts')
-//            ->where('posts.user_id = users.id '.$completed.$selectTag)
-//            ->orderBy($sortName.' desc');
+        if ($tag !== 'all') {
+            $query->andWhere('t.name = "'.$tag.'"');
+        }
 
-// ------- 3 вариант left joinaми ------
-//        select distinct posts.*, users.firstname
-//        from posts
-//        left join tags_posts
-//        on posts.id = tags_posts.post_id
-//        left join users
-//        on posts.user_id = users.id
-//        left join tags
-//        on tags.id = tags_posts.tag_id
-//        where tags.name = 'Прочее'
-//        order by date_publ desc
+        if ($sort == 1)
+            $query->addOrderBy('date_publ desc');
+        elseif ($sort == 2)
+            $query->addOrderBy('like desc');
+        elseif ($sort == 3) {
+            $query->andWhere('p.completed = 1');
+            $query->addOrderBy('completed desc');
+        }
 
         $provider = new ActiveDataProvider([
             'query' => $query,
@@ -115,7 +86,7 @@ class MainController extends Controller
                 'pageSize' => 5,
             ]
         ]);
-        return $this->render('index', ['model' => $provider, 'activeLabelIdeaSort' => $activeLabelIdeaSort, 'activeTags' => $activeTags]);
+        return $this->render('index', ['model' => $provider, 'activeLabelIdeaSort' => $sort, 'activeTags' => $tag]);
     }
 
 
