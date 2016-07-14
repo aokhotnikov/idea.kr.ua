@@ -6,11 +6,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Users */
 
-$this->title = 'Create Users';
+$this->title = 'Создать пользователя';
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="users-create">
+<div class="users-create ideas-center">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

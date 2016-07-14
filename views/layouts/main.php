@@ -53,7 +53,15 @@ AppAsset::register($this);
 
         <?= $this->render("authentication"); ?>
 
-        <?= $this->render("leftBlock", ['activeTags' => $this->params['activeTags']]); ?>
+        <?php if (isset($this->params['activeTags'])): ?>
+
+            <?= $this->render("leftBlock", ['activeTags' => $this->params['activeTags']]); ?>
+
+        <?php else: ?>
+
+            <?= $this->render("adminLeftBlock"); ?>
+
+        <?php endif; ?>
 
         <?= $content ?>
 

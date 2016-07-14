@@ -65,6 +65,7 @@ class MainController extends Controller
             ->select(['p.*', 'u.firstname', "GROUP_CONCAT(DISTINCT t.name ORDER BY t.name ASC SEPARATOR ',') as tags"])
             ->from('users u, posts p, tags t, tags_posts tp')
             ->where('p.user_id = u.id and p.id = tp.post_id and t.id = tp.tag_id')
+            ->andWhere('p.status = "isApproved"')
             ->groupBy('p.id');
 
         if ($tag !== 'all') {
@@ -187,8 +188,7 @@ class MainController extends Controller
             }
         }
 
-        $tags = Tags::find('name')->select('name')->orderBy('id')->asArray()->all();
-        $tags = ArrayHelper::getColumn($tags, 'name');
+        $tags = ArrayHelper::map(Tags::find('name')->all(), 'name', 'name');
 
         return $this->render('add-idea', ['model' => $model, 'tags' => $tags]);
     }

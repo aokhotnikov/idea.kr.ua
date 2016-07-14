@@ -1,7 +1,5 @@
 jQuery(document).ready(function () {
 
-
-
     $('form .inputPhone').mask("+7 (999) 999-99-99");
 
     //Fancybox
@@ -419,6 +417,15 @@ $(function () {
 
         });
 
+    });
+
+
+    $('#tags').select2({
+        language: "ru",
+        placeholder: "Можете ввести категорию или выбрать из списка...",
+        maximumSelectionLength: 5,
+        //tokenSeparators: [',', ' '],
+        tags: true
     });
 
 });

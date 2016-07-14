@@ -6,6 +6,7 @@ use Yii;
 use app\models\Users;
 use app\models\UsersSearch;
 use yii\web\Controller;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -14,6 +15,17 @@ use yii\filters\VerbFilter;
  */
 class UsersController extends Controller
 {
+    public function beforeAction($action)
+    {
+        if (parent::beforeAction($action)) {
+            if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin) {
+                return true;
+            }
+            throw new HttpException(404 ,'Page not found');
+        } else {
+            return false;
+        }
+    }
     /**
      * @inheritdoc
      */

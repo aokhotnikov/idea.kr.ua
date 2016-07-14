@@ -13,7 +13,7 @@ use Yii;
  * @property string $pass
  * @property string $salt
  * @property string $email
- * @property integer $role
+ * @property integer $isAdmin
  * @property integer $age
  * @property string $token
  * @property string $auth_key
@@ -36,6 +36,7 @@ class Users extends \yii\db\ActiveRecord
         }
         return false;
     }
+
     /**
      * @inheritdoc
      */
@@ -51,7 +52,7 @@ class Users extends \yii\db\ActiveRecord
     {
         return [
             [['firstname', 'lastname'], 'required'],
-            [['role', 'age'], 'integer'],
+            [['isAdmin', 'age'], 'integer'],
             [['firstname', 'lastname'], 'string', 'max' => 30],
             [['pass', 'email'], 'string', 'max' => 50],
             [['salt'], 'string', 'max' => 10],
@@ -72,7 +73,7 @@ class Users extends \yii\db\ActiveRecord
             'pass' => 'Pass',
             'salt' => 'Salt',
             'email' => 'Email',
-            'role' => 'Role',
+            'isAdmin' => 'IsAdmin',
             'age' => 'Age',
             'token' => 'Token',
             'auth_key' => 'Auth_key',
@@ -88,7 +89,7 @@ class Users extends \yii\db\ActiveRecord
         $this->email = $arrayAttributes["email"];
         $this->age = $arrayAttributes["age"];
         $this->salt = Yii::$app->getSecurity()->generateRandomString(10);
-        $this->pass = md5($arrayAttributes["pass"].$this->salt);
+        $this->pass = md5($arrayAttributes["pass"] . $this->salt);
 
         if ($this->save()) {
             $user = UserIdentity::findByEmail($this->email);

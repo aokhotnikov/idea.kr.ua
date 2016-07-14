@@ -20,6 +20,8 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/jquery.fancybox.css',
         'css/bootstrap-social.css',
+        //'css/bootstrap-editable.css',
+        'css/select2.min.css',
         'css/style.css',
     ];
     public $js = [
@@ -28,6 +30,9 @@ class AppAsset extends AssetBundle
         'js/jquery.bxslider.min.js',
         'js/jquery.maskedinput.js',
         'js/jquery.royalslider.min.js',
+        //'js/bootstrap-editable.min.js',
+        'js/select2.min.js',
+        'js/i18n/ru.js',
         'js/scripts.js',
     ];
     public $depends = [

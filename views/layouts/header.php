@@ -1,8 +1,6 @@
 <?php
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
-use yii\helpers\Html;
-
 
 NavBar::begin([
     'brandLabel' => '<img src="/src/lamp.png" alt="idea" width="80px" height="35px" class="small-navi">IDEA.KR.UA',
@@ -22,6 +20,14 @@ echo Nav::widget([
         Yii::$app->user->isGuest
             ?   ['label' => 'ВХОД', 'linkOptions' => ['onclick' => '$(\'#btn-auth\').click();'] ]
             :   ['label' => 'Добавить', 'url' => ['/main/add-idea']],
+        !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin
+            ?   [
+                    'label' => 'Админ',
+                    'url' => ['/admin/index'],
+                    'active' => in_array(Yii::$app->controller->id, ['users', 'admin', 'posts']) // in_array - присутствует ли в массиве значение controllerа
+                ]
+            : ""
+        ,
         !Yii::$app->user->isGuest
             ?   ['label' => 'Выйти (' . Yii::$app->user->identity->firstname . ')', 'url' => ['/logout']]
             :   ""

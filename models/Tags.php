@@ -29,7 +29,7 @@ class Tags extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['name'], 'string', 'max' => 50],
+            [['name'], 'string', 'max' => 100],
             [['name'], 'unique'],
         ];
     }
@@ -52,4 +52,6 @@ class Tags extends \yii\db\ActiveRecord
     {
         return $this->hasMany(TagsPosts::className(), ['tag_id' => 'id']);
     }
+
+
 }

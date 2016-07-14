@@ -8,6 +8,7 @@ $tags = (new Query())
             ->select('tp.tag_id, t.name, count(*) as num')
             ->from('tags_posts tp, tags t, posts p')
             ->where('tp.tag_id=t.id and p.id = tp.post_id')
+            ->andWhere('p.status = "isApproved"')
             ->groupBy('tp.tag_id')
             ->all();
 ?>
@@ -17,7 +18,7 @@ $tags = (new Query())
 
     <ul class="ideas-list">
         <li class="<?= $activeTags === 'all' ? 'active' : '' ?>" >
-            <a href="/">Все идеи <sup><?= Posts::find()->count() ?></sup></a>
+            <a href="/">Все идеи <sup><?= Posts::find()->where('status = "isApproved"')->count() ?></sup></a>
         </li>
         <?php foreach ($tags as $tag): ?>
             <li class="<?= $activeTags === $tag['name'] ? 'active' : '' ?>" >

@@ -1,5 +1,6 @@
 <?php
 /* @var $this yii\web\View */
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
@@ -12,6 +13,7 @@ $this->registerLinkTag([
     'href' => 'src/favicon.ico',
 ]);
 $this->params['activeTags'] = 'all';
+//echo "<pre>";print_r($tags);echo "</pre>";
 ?>
 <div class="ideas-center">
     <div class="user-form-lg">
@@ -32,7 +34,9 @@ $this->params['activeTags'] = 'all';
             ]); ?>
 
             <?= $form->field($model, 'title')->label('Тема:') ?>
-            <?= $form->field($model, 'tags[]')->label('Категории:')->checkboxList($tags) ?>
+
+            <?= $form->field($model, 'tags[]')->label('Категории:')->dropDownList($tags, ['multiple' => 'multiple', 'id' => 'tags', 'class' => 'form-control']) ?>
+
             <?= $form->field($model, 'text')->textArea(['rows' => 10])->label('Описание:') ?>
 
             <div class="form-group text-center">

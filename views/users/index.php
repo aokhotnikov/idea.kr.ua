@@ -7,17 +7,14 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\UsersSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
+$this->title = 'Пользователи';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="users-index">
+<div class="users-index ideas-center">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Users', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

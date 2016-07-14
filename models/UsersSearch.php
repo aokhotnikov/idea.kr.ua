@@ -18,7 +18,7 @@ class UsersSearch extends Users
     public function rules()
     {
         return [
-            [['id', 'role', 'age'], 'integer'],
+            [['id', 'isAdmin', 'age'], 'integer'],
             [['firstname', 'lastname', 'pass', 'salt', 'email', 'token', 'auth_key'], 'safe'],
         ];
     }
@@ -60,7 +60,7 @@ class UsersSearch extends Users
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'role' => $this->role,
+            'isAdmin' => $this->isAdmin,
             'age' => $this->age,
         ]);
 

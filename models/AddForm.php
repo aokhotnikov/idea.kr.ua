@@ -14,7 +14,6 @@ class AddForm extends Model
     {
         return [
             ['title', 'required', 'message' => 'Поле «Тема» не должно быть пустым'],
-            ['tags', 'required', 'message' => 'Необходимо выбрать «Категорию»'],
             ['text', 'required', 'message' => 'Поле «Описание» не должно быть пустым'],
             ['title', 'unique', 'targetClass' => 'app\models\Posts', 'message' => 'Такая идея уже есть'],
             ['title', 'string', 'max' => 128],
