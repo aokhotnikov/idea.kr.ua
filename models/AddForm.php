@@ -9,6 +9,7 @@ class AddForm extends Model
     public $title;
     public $tags;
     public $text;
+    public $verifyCode;
 
     public function rules()
     {
@@ -18,7 +19,7 @@ class AddForm extends Model
             ['title', 'unique', 'targetClass' => 'app\models\Posts', 'message' => 'Такая идея уже есть'],
             ['title', 'string', 'max' => 128],
             ['text', 'string', 'max' => 3000],
-            //['tags', 'in', 'range' => [1, 2, 3], 'allowArray' => true],
+            ['verifyCode', 'captcha', 'captchaAction' => 'main/captcha'],
         ];
     }
 }

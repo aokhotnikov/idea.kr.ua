@@ -1,5 +1,6 @@
 <?php
 /* @var $this yii\web\View */
+use yii\captcha\Captcha;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
@@ -29,8 +30,8 @@ $this->params['activeTags'] = 'all';
         <?php else: ?>
 
             <?php $form = ActiveForm::begin([
-                'enableClientValidation' => false, //клиентскую валидацию отключил (для дебага серверной или для AJAX валидации)
-                'enableAjaxValidation' => true,
+                //'enableClientValidation' => false, //клиентскую валидацию отключил (для дебага серверной или для AJAX валидации)
+                //'enableAjaxValidation' => true,    //если включить, не работает каптча
             ]); ?>
 
             <?= $form->field($model, 'title')->label('Тема:') ?>
@@ -38,6 +39,11 @@ $this->params['activeTags'] = 'all';
             <?= $form->field($model, 'tags[]')->label('Категории:')->dropDownList($tags, ['multiple' => 'multiple', 'id' => 'tags', 'class' => 'form-control']) ?>
 
             <?= $form->field($model, 'text')->textArea(['rows' => 10])->label('Описание:') ?>
+
+            <?= $form->field($model, 'verifyCode')->label('Проверочный код:')->widget(Captcha::className(), [
+                'template' => '<div class="row"><div class="col-lg-2 text-right">{image}</div><div class="col-lg-3">{input}</div></div>',
+                'captchaAction' => 'main/captcha',
+            ]) ?>
 
             <div class="form-group text-center">
                 <?= Html::submitButton('Добавить', ['class' => 'btn btn-primary']) ?>

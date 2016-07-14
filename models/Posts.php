@@ -92,19 +92,21 @@ class Posts extends \yii\db\ActiveRecord
         //echo '<pre>';print_r($formData["tags"]);echo '</pre>';die; // for debag
 
         if ($this->save()) {
-            foreach ($formData["tags"] as $tag) {
-                $query = Tags::find()->where(['name' => $tag])->one();
-                $tag_id = $query["id"];
-                if (!$tag_id) { // если в таблице "Tags" нет такого тега
-                    //echo '<pre>';print_r($query);echo '</pre>'; // for debag
-                    $modelTags = new Tags();
-                    $modelTags->name = $tag;
-                    $modelTags->save(); //save new tag
-                    $tag_id = $modelTags->id;
-                }
-                $modelTagsPosts = new TagsPosts(); // добавляю связки в таблицу "Tags_posts"
-                if (!$modelTagsPosts->insertRecord($this->id, $tag_id)) {
-                    return false;
+            if ($formData["tags"]) { //Если пользователь ввёл какие-то теги
+                foreach ($formData["tags"] as $tag) {
+                    $query = Tags::find()->where(['name' => $tag])->one();
+                    $tag_id = $query["id"];
+                    if (!$tag_id) { // если в таблице "Tags" нет такого тега
+                        //echo '<pre>';print_r($query);echo '</pre>'; // for debag
+                        $modelTags = new Tags();
+                        $modelTags->name = $tag;
+                        $modelTags->save(); //save new tag
+                        $tag_id = $modelTags->id;
+                    }
+                    $modelTagsPosts = new TagsPosts(); // добавляю связки в таблицу "Tags_posts"
+                    if (!$modelTagsPosts->insertRecord($this->id, $tag_id)) {
+                        return false;
+                    }
                 }
             }
             return true;

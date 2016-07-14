@@ -26,6 +26,10 @@ class MainController extends Controller
                 'class' => 'yii\authclient\AuthAction',
                 'successCallback' => [$this, 'successCallback'],
             ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                //'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
         ];
     }
 
@@ -169,7 +173,7 @@ class MainController extends Controller
         }
         $model = new AddForm();
 
-        //  ----  AJAX валидация  ----
+        //  ---- if AJAX валидация  ----
         if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post())) {//пришли POST данные
                 Yii::$app->response->format = Response::FORMAT_JSON;

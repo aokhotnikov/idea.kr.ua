@@ -78,21 +78,23 @@ class PostsController extends Controller
             TagsPosts::deleteAll(['post_id' => $id]);  // delete relations in the table "tags_posts"
 
             // add new tags
-            $masTags = $formData['tagz'];
-            foreach ($masTags as $tag) {
-                $query = Tags::find()->where(['name' => $tag])->one();
-                $tag_id = $query["id"];
-                if (!$tag_id) { // если в таблице "Tags" нет такого тега
-                    //echo '<pre>';print_r($query);echo '</pre>';die; // for debag
-                    $model = new Tags();
-                    $model->name = $tag;
-                    $model->save(); //save new tag
-                    $tag_id = $model->id;
-                }
-                // add new relations
-                $modelTagsPosts = new TagsPosts();
-                if (!$modelTagsPosts->insertRecord($id, $tag_id)) {
-                    echo 'I can not insert data into the table';
+            if ($formData['tagz']) {
+                $masTags = $formData['tagz'];
+                foreach ($masTags as $tag) {
+                    $query = Tags::find()->where(['name' => $tag])->one();
+                    $tag_id = $query["id"];
+                    if (!$tag_id) { // если в таблице "Tags" нет такого тега
+                        //echo '<pre>';print_r($query);echo '</pre>';die; // for debag
+                        $model = new Tags();
+                        $model->name = $tag;
+                        $model->save(); //save new tag
+                        $tag_id = $model->id;
+                    }
+                    // add new relations
+                    $modelTagsPosts = new TagsPosts();
+                    if (!$modelTagsPosts->insertRecord($id, $tag_id)) {
+                        echo 'I can not insert data into the table';
+                    }
                 }
             }
 
