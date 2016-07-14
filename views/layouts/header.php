@@ -3,7 +3,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 
 NavBar::begin([
-    'brandLabel' => '<img src="/src/lamp.png" alt="idea" width="80px" height="35px" class="small-navi">IDEA.KR.UA',
+    'brandLabel' => '<img src="/src/lamp.png" alt="idea" width="60px" height="60px" class="small-navi">IDEA.KR.UA',
     'brandUrl' => Yii::$app->homeUrl,
     'brandOptions' => [
         'class' => 'navbar-brand'
