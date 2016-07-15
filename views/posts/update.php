@@ -40,7 +40,7 @@ foreach ($masTags as $tag){
 
     <?= $form->field($model, 'text')->textArea(['rows' => 15]) ?>
 
-    <?= $form->field($model, 'completed')->textInput() ?>
+    <?= $form->field($model, 'completed')->dropDownList(['0' => 'Нет','1' => 'Да']) ?>
 
     <?= $form->field($model, 'status')->dropDownList([
         'new' => 'Новый',

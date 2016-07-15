@@ -29,9 +29,9 @@ $this->params['breadcrumbs'][] = 'Update';
 
         <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'isAdmin')->textInput() ?>
+        <?= $form->field($model, 'isAdmin')->dropDownList(['0' => 'Нет','1' => 'Да']) ?>
 
-        <?= $form->field($model, 'banned')->textInput() ?>
+        <?= $form->field($model, 'banned')->dropDownList(['0' => 'Нет','1' => 'Да']) ?>
 
         <?= $form->field($model, 'age')->textInput() ?>
 
