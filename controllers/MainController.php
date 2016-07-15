@@ -34,7 +34,7 @@ class MainController extends Controller
     }
 
     /**
-     *  --------------------------------------------- РЕГИСТРАЦИЯ ЧЕРЕЗ VKONTAKTE ---------------------------------------------------
+     *  --------------------------------------------- REGISTRATION WITH VKONTAKTE -------------------------------------------------
      */
     public function successCallback($client)
     {
@@ -45,8 +45,7 @@ class MainController extends Controller
 
         if ($record) {
             //$record->token = ???        //token
-        }
-        else {
+        } else {
             $record = new Users();    //model
             $record->firstname = $attributes["first_name"];
             $record->lastname = $attributes["last_name"];
@@ -61,58 +60,15 @@ class MainController extends Controller
     }
 
     /**
-     *  ------------------------------------------------- ГЛАВНАЯ СТРАНИЦА ----------------------------------------------------
-     */
-    public function actionIndex($tag = 'all', $sort = 1)
-    {
-        $query = (new Query())
-            ->select(['p.*', 'u.firstname', "GROUP_CONCAT(DISTINCT t.name ORDER BY t.name ASC SEPARATOR ',') as tags"])
-            ->from('users u, posts p, tags t, tags_posts tp')
-            ->where('p.user_id = u.id and p.id = tp.post_id and t.id = tp.tag_id')
-            ->andWhere('p.status = "isApproved"')
-            ->groupBy('p.id');
-
-        if ($tag !== 'all') {
-            $query->andWhere('t.name = "'.$tag.'"');
-        }
-
-        if ($sort == 1)
-            $query->addOrderBy('date_publ desc');
-        elseif ($sort == 2)
-            $query->addOrderBy('like desc');
-        elseif ($sort == 3) {
-            $query->andWhere('p.completed = 1');
-            $query->addOrderBy('completed desc');
-        }
-
-        $provider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 5,
-            ]
-        ]);
-        return $this->render('index', ['model' => $provider, 'activeLabelIdeaSort' => $sort, 'activeTags' => $tag]);
-    }
-
-
-    /**
-     *  -------------------------------------------------------- О НАС --------------------------------------------------------
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
-
-    /**
-     *  ------------------------------------------------ РЕГИСТРАЦИЯ ЧЕРЕЗ FACEBOOK -------------------------------------------
+     *  ------------------------------------------------ REGISTRATION WITH FACEBOOK -------------------------------------------
      */
     public function actionFb()
     {
         $provider = new \League\OAuth2\Client\Provider\Facebook([
-            'clientId'          => '1758922991017571',
-            'clientSecret'      => '7cf551bd21f3b3f02b6155dc7fa77e79',
-            'redirectUri'       => 'http://idea.kr.ua.dev/main/fb',
-            'graphApiVersion'   => 'v2.6',
+            'clientId' => '1758922991017571',
+            'clientSecret' => '7cf551bd21f3b3f02b6155dc7fa77e79',
+            'redirectUri' => 'http://idea.kr.ua.dev/main/fb',
+            'graphApiVersion' => 'v2.6',
         ]);
 
         $session = Yii::$app->session;
@@ -158,13 +114,86 @@ class MainController extends Controller
                 return $this->goBack();
             }
 
-         } catch (\Exception $e) {
+        } catch (\Exception $e) {
             exit('Failed to get user details');
         }
     }
 
     /**
-     *  ------------------------------------------------ ДОБАВЛЕНИЕ ИДЕИ ------------------------------------------------------
+     *  -------------------------------------------------- REGISTRATION WITH FORM -----------------------------------------------
+     */
+    public function actionRegistration()
+    {
+        $model = new RegForm();
+
+        //  ----  AJAX валидация  ----
+        if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+            if ($model->load(Yii::$app->request->post())) {//пришли POST данные
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+            }
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            //echo '<pre>';print_r($_POST);echo '</pre>';die; // for debag
+
+            $record = new Users();//model
+            $formData = Yii::$app->request->post("RegForm");
+            if ($record->insertRecord($formData)) {
+                Yii::$app->session->setFlash('registrationSubmitted'); //Flash message
+                return $this->refresh();
+            }
+
+            return $this->goBack();
+        }
+        return $this->render('registration', ['model' => $model]);
+    }
+
+    /**
+     *  ---------------------------------------------------- MAIN PAGE -------------------------------------------------------
+     */
+    public function actionIndex($tag = 'all', $sort = 1)
+    {
+        $query = (new Query())
+            ->select(['p.*', 'u.firstname', "GROUP_CONCAT(DISTINCT t.name ORDER BY t.name ASC SEPARATOR ',') as tags"])
+            ->from('users u, posts p, tags t, tags_posts tp')
+            ->where('p.user_id = u.id and p.id = tp.post_id and t.id = tp.tag_id')
+            ->andWhere('p.status = "isApproved"')
+            ->groupBy('p.id');
+
+        if ($tag !== 'all') {
+            $query->andWhere('t.name = "' . $tag . '"');
+        }
+
+        if ($sort == 1)
+            $query->addOrderBy('date_publ desc');
+        elseif ($sort == 2)
+            $query->addOrderBy('like desc');
+        elseif ($sort == 3) {
+            $query->andWhere('p.completed = 1');
+            $query->addOrderBy('completed desc');
+        }
+
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 5,
+            ]
+        ]);
+        return $this->render('index', ['model' => $provider, 'activeLabelIdeaSort' => $sort, 'activeTags' => $tag]);
+    }
+
+
+    /**
+     *  --------------------------------------------------------- ABOUT ---------------------------------------------------------
+     */
+    public function actionAbout()
+    {
+        return $this->render('about');
+    }
+
+    /**
+     *  ------------------------------------------------------- ADD IDEA --------------------------------------------------------
      */
     public function actionAddIdea()
     {
@@ -195,35 +224,5 @@ class MainController extends Controller
         $tags = ArrayHelper::map(Tags::find('name')->all(), 'name', 'name');
 
         return $this->render('add-idea', ['model' => $model, 'tags' => $tags]);
-    }
-
-    /**
-     *  -------------------------------------------------- РЕГИСТРАЦИЯ ЧЕРЕЗ ФОРМУ -----------------------------------------------
-     */
-    public function actionRegistration()
-    {
-        $model = new RegForm();
-
-        //  ----  AJAX валидация  ----
-        if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
-            if ($model->load(Yii::$app->request->post())) {//пришли POST данные
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
-            }
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            //echo '<pre>';print_r($_POST);echo '</pre>';die; // for debag
-
-            $record = new Users();//model
-            $formData = Yii::$app->request->post("RegForm");
-            if ($record->insertRecord($formData)) {
-                Yii::$app->session->setFlash('registrationSubmitted'); //Flash message
-                return $this->refresh();
-            }
-
-            return $this->goBack();
-        }
-        return $this->render('registration', ['model' => $model]);
     }
 }

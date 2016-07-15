@@ -152,26 +152,11 @@ class PostsController extends Controller
         }
     }
 
-    public function actionApprove($id)
+    public function actionChangeStatus($id, $status)
     {
         $model = $this->findModel($id);
         //echo '<pre>';print_r($this->findModel($id));echo '</pre>';die; // for debag
-        $model->status = 'isApproved';
-
-        if ($model->save())
-            return $this->redirect(['view', 'id' => $model->id]);
-        else {
-            return $this->render('update', [
-                'model' => $model
-            ]);
-        }
-    }
-
-    public function actionReject($id)
-    {
-        $model = $this->findModel($id);
-        //echo '<pre>';print_r($this->findModel($id));echo '</pre>';die; // for debag
-        $model->status = 'isRejected';
+        $model->status = $status ? 'isApproved' : 'isRejected';
 
         if ($model->save())
             return $this->redirect(['view', 'id' => $model->id]);

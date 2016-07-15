@@ -67,8 +67,8 @@ foreach ($masTags as $tag){
 
     <div class="form-group">
         <?= Html::submitButton('Редактировать', ['class' => 'btn btn-primary']) ?>
-        <?= $model->status === 'new' ? Html::a('Утвердить', ['/posts/approve?id=' . $model['id']], ['class' => 'btn btn-success']) : '' ?>
-        <?= $model->status === 'new' ? Html::a('Отклонить', ['/posts/reject?id=' . $model['id']], ['class' => 'btn btn-warning']) : '' ?>
+        <?= $model->status === 'new' ? Html::a('Утвердить', ['/posts/change-status?status=1&id=' . $model['id']], ['class' => 'btn btn-success']) : '' ?>
+        <?= $model->status === 'new' ? Html::a('Отклонить', ['/posts/change-status?status=0&id=' . $model['id']], ['class' => 'btn btn-warning']) : '' ?>
         <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
