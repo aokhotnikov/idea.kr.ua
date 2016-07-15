@@ -65,11 +65,6 @@ class PostsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $query = (new Query())
-            ->select('t.name')
-            ->from('tags t, tags_posts tp')
-            ->where('t.id = tp.tag_id')
-            ->andWhere('tp.post_id = '.$id)->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
@@ -107,6 +102,13 @@ class PostsController extends Controller
 
             return $this->redirect(['view', 'id' => $id]);
         } else {
+
+            $query = (new Query())
+                ->select('t.name')
+                ->from('tags t, tags_posts tp')
+                ->where('t.id = tp.tag_id')
+                ->andWhere('tp.post_id = '.$id)->all();
+
             return $this->render('update', [
                 'model' => $model,
                 'tags' => $query,

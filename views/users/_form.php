@@ -16,9 +16,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'lastname')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'pass')->passwordInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'pass')->passwordInput(['maxlength' => true, 'disabled' => true]) ?>
 
-    <?= $form->field($model, 'salt')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'salt')->textInput(['maxlength' => true, 'disabled' => true]) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
@@ -26,9 +26,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'age')->textInput() ?>
 
-    <?= $form->field($model, 'token')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'token')->textInput(['maxlength' => true, 'disabled' => true]) ?>
 
-    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true, 'disabled' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Сохранить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
