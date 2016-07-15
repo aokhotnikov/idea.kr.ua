@@ -41,18 +41,23 @@ class MainController extends Controller
         $attributes = $client->getUserAttributes();
         $record = UserIdentity::findByVk_id($attributes["id"]);
 
-//        echo "<br><pre>";print_r($attributes);echo "</pre>";die;
+        //echo "<br><pre>";print_r($attributes);echo "</pre>";die;
 
-        if ($record) {
-            //$record->token = ???        //token
-        } else {
-            $record = new Users();    //model
-            $record->firstname = $attributes["first_name"];
-            $record->lastname = $attributes["last_name"];
-            $record->email = $attributes["email"];
-            $record->vk_id = $attributes["id"];
-            //$record->token = ???        //token
+        if (!$record) {
+
+            $record = UserIdentity::findByEmail($attributes["email"]);
+
+            if ($record) {
+                $record->vk_id = $attributes["id"];
+            }else{
+                $record = new Users();    //model
+                $record->firstname = $attributes["first_name"];
+                $record->lastname = $attributes["last_name"];
+                $record->email = $attributes["email"] ? $attributes["email"] : $attributes["id"].'@idea.net';
+                $record->vk_id = $attributes["id"];
+            }
         }
+        //$record->token = ???        //token
         if ($record->save()) {
             Yii::$app->user->login(UserIdentity::findByVk_id($attributes["id"]), 3600 * 24 * 60);
             return $this->goBack();
@@ -93,22 +98,27 @@ class MainController extends Controller
         ]);
         //echo date("m.d.y", $token->getExpires());
 
-        // Optional: Now you have a token you can look up a users profile data
         try {
             $user = $provider->getResourceOwner($token);
 
             $record = UserIdentity::findByFb_id($user->getId());
 
-            if ($record)
-                $record->token = $token->getToken();        //token
-            else {
-                $record = new Users();    //model
-                $record->firstname = $user->getFirstName();
-                $record->lastname = $user->getLastName();
-                $record->email = $user->getEmail();
-                $record->fb_id = $user->getId();
-                $record->token = $token->getToken();        //token
+            if (!$record){
+
+                $record = UserIdentity::findByEmail($user->getEmail());
+
+                if ($record) {
+                    $record->fb_id = $user->getId();
+                }else {
+
+                    $record = new Users();    //model
+                    $record->firstname = $user->getFirstName();
+                    $record->lastname = $user->getLastName();
+                    $record->email = $user->getEmail() ? $user->getEmail() : $user->getId().'@idea.net';
+                    $record->fb_id = $user->getId();
+                }
             }
+            $record->token = $token->getToken();        //token
             if ($record->save()) {
                 Yii::$app->user->login(UserIdentity::findByFb_id($user->getId()), 3600 * 24 * 60);
                 return $this->goBack();
@@ -199,6 +209,8 @@ class MainController extends Controller
     {
         if (Yii::$app->user->isGuest) {
             return $this->redirect('registration');
+        }else if (Yii::$app->user->identity->banned){
+            return $this->goHome();
         }
         $model = new AddForm();
 

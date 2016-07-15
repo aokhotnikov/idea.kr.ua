@@ -14,17 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h3><?= Html::encode($this->title) ?></h3>
 
-    <p>
-        <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -35,6 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'salt',
             'email:email',
             'isAdmin',
+            'banned',
             'age',
             'token',
             'auth_key',
@@ -42,5 +32,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'fb_id',
         ],
     ]) ?>
+    <p>
+        <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Забанить', ['change-ban', 'id' => $model->id, 'ban' => 1], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => 'Вы действительно хотите забанить пользователя?',
+            ],
+        ]) ?>
+        <?= Html::a('Разбанить', ['change-ban', 'id' => $model->id, 'ban' => 0], [
+            'class' => 'btn btn-success',
+        ]) ?>
+    </p>
 
 </div>

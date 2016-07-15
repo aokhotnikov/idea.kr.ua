@@ -112,6 +112,7 @@ class PostsController extends Controller
             return $this->render('update', [
                 'model' => $model,
                 'tags' => $query,
+                'allTags' => Tags::find('name')->all()
             ]);
         }
     }

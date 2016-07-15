@@ -18,21 +18,48 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'firstname',
-            'lastname',
-            //'pass',
-            //'salt',
-             'email:email',
-             'isAdmin',
-            // 'age',
-            // 'token',
-            // 'auth_key',
-
-            ['class' => 'yii\grid\ActionColumn'],
+        'showHeader' => true,
+        'pager' => [
+            'options' => [
+                'class' => 'pager',
+            ]
         ],
-    ]); ?>
+        'summaryOptions' => ['class' => 'summary text-center'],
+        'columns' => [
+            ['attribute' => 'id', 'label' => '#'],
+            ['attribute' => 'firstname', 'label' => 'Имя'],
+            ['attribute' => 'lastname', 'label' => 'Фамилия'],
+            'email:email',
+            ['attribute' => 'isAdmin', 'label' => 'Админ'],
+            ['attribute' => 'banned', 'label' => 'Забанен'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'controller' => 'users',
+                'template' => '{update}{view}{change-ban}',
+                'buttons' => [
+                    'update' => function ($url, $model, $key) {
+                        return Html::a('<span class="glyphicon glyphicon-edit"></span>', $url, [
+                            'title' => 'Редактировать',
+                        ]);
+                    },
+                    'view' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                            'title' => 'Просмотр',
+                        ]);
+                    },
+                    'change-ban' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-minus-sign"></span>', $url.'&ban=1', [
+                            'title' => 'Забанить',
+                            'data-confirm' => 'Вы действительно хотите забанить пользователя '.$model->firstname.'?',
+                        ]);
+                    }
+                ]
+            ],
+        ]
+    ]);
+
+    ?>
+
+
+
 </div>

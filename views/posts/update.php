@@ -49,7 +49,7 @@ foreach ($masTags as $tag){
     ]) ?>
 
     <?= $form->field($model, 'tagz[]')->label('Категории:')->dropDownList(
-        ArrayHelper::map($tags, 'name', 'name'),
+        ArrayHelper::map($allTags, 'name', 'name'),
         [
             'multiple' => 'multiple',
             'id' => 'tags',

@@ -14,6 +14,7 @@ use Yii;
  * @property string $salt
  * @property string $email
  * @property integer $isAdmin
+ * @property integer $banned
  * @property integer $age
  * @property string $token
  * @property string $auth_key
@@ -52,7 +53,7 @@ class Users extends \yii\db\ActiveRecord
     {
         return [
             [['firstname', 'lastname'], 'required'],
-            [['isAdmin', 'age'], 'integer'],
+            [['isAdmin', 'age', 'banned'], 'integer'],
             [['firstname', 'lastname'], 'string', 'max' => 30],
             [['pass', 'email'], 'string', 'max' => 50],
             [['salt'], 'string', 'max' => 10],
@@ -68,17 +69,18 @@ class Users extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'firstname' => 'Firstname',
-            'lastname' => 'Lastname',
-            'pass' => 'Pass',
-            'salt' => 'Salt',
+            'firstname' => 'Имя',
+            'lastname' => 'Фамилия',
+            'pass' => 'Пароль',
+            'salt' => 'Соль',
             'email' => 'Email',
-            'isAdmin' => 'IsAdmin',
-            'age' => 'Age',
-            'token' => 'Token',
-            'auth_key' => 'Auth_key',
-            'fb_id' => 'Fb_id',
-            'vk_id' => 'Vk_id',
+            'isAdmin' => 'Админ',
+            'banned' => 'Бан',
+            'age' => 'Возраст',
+            'token' => 'Токен',
+            'auth_key' => 'Аутентификационный код',
+            'fb_id' => 'Facebook код',
+            'vk_id' => 'Vkontakte код',
         ];
     }
 

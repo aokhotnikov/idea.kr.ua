@@ -19,7 +19,7 @@ echo Nav::widget([
         ['label' => 'О нас', 'url' => ['/main/about']],
         Yii::$app->user->isGuest
             ?   ['label' => 'ВХОД', 'linkOptions' => ['onclick' => '$(\'#btn-auth\').click();'] ]
-            :   ['label' => 'Добавить', 'url' => ['/main/add-idea']],
+            :   Yii::$app->user->identity->banned ? "" : ['label' => 'Добавить', 'url' => ['/main/add-idea']],
         !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin
             ?   [
                     'label' => 'Админ',
