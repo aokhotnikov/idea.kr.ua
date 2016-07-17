@@ -19,15 +19,14 @@ echo Nav::widget([
         ['label' => 'О нас', 'url' => ['/main/about']],
         Yii::$app->user->isGuest
             ?   ['label' => 'ВХОД', 'linkOptions' => ['onclick' => '$(\'#btn-auth\').click();'] ]
-            :   Yii::$app->user->identity->banned ? "" : ['label' => 'Добавить', 'url' => ['/main/add-idea']],
+            :   (Yii::$app->user->identity->banned ? "" : ['label' => 'Добавить', 'url' => ['/main/add-idea']]),
         !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin
             ?   [
                     'label' => 'Админ',
                     'url' => ['/admin/index'],
                     'active' => in_array(Yii::$app->controller->id, ['users', 'admin', 'posts']) // in_array - присутствует ли в массиве значение controllerа
                 ]
-            : ""
-        ,
+            : "",
         !Yii::$app->user->isGuest
             ?   ['label' => 'Выйти (' . Yii::$app->user->identity->firstname . ')', 'url' => ['/logout']]
             :   ""
