@@ -18,14 +18,14 @@ echo Nav::widget([
         ['label' => 'Главная', 'url' => ['/main/index']],
         ['label' => 'О нас', 'url' => ['/main/about']],
         Yii::$app->user->isGuest
-            ?   ['label' => 'ВХОД', 'linkOptions' => ['onclick' => '$(\'#btn-auth\').click();'] ]
+            ?   ['label' => 'ВХОД', 'linkOptions' => ['onclick' => "$('#modalFormAuth').modal('show');"] ]
             :   (Yii::$app->user->identity->banned
                         ?   ""
-                        :   (Yii::$app->user->identity->email === ''
+                        :   (preg_match("/[0-9]*@idea.net/", Yii::$app->user->identity->email)
                                 ?   [
                                         'label' => 'Добавить',
                                         'linkOptions' => [
-                                            'onclick' => '$(\'#modalFormEmailEnter\').modal(\'show\');'
+                                            'onclick' => "$('#modalFormEmailEnter').modal('show');"
                                         ]
                                     ]
                                 :   [

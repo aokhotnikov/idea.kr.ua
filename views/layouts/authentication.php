@@ -8,14 +8,8 @@ $model = new AuthForm();
 
 Modal::begin([
     'header' => '<h3 class="text-center"><span class="glyphicon glyphicon-lock"></span> Авторизация</h3>',
-    'toggleButton' => [
-        'tag' => 'a',
-        'class' => 'btn btn-default',
-        'visible' => 'false',
-        'id' => 'btn-auth',
-        'label' => 'ДОБАВИТЬ ИДЕЮ',
-    ],
-    'size' => 'modal-size'
+    'size' => 'modal-size',
+    'id' => 'modalFormAuth'
 ]);
 
 ?>
