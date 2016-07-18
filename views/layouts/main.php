@@ -55,15 +55,12 @@ AppAsset::register($this);
 
         <?= $this->render("formEmailEnter"); ?>
 
-        <?php if (isset($this->params['activeTags'])): ?>
-
-            <?= $this->render("leftBlock", ['activeTags' => $this->params['activeTags']]); ?>
-
-        <?php else: ?>
-
-            <?= $this->render("adminLeftBlock"); ?>
-
-        <?php endif; ?>
+        <?php
+        if (isset($this->params['activeTags']))
+            echo $this->render("leftBlock", ['activeTags' => $this->params['activeTags']]);
+        elseif(Yii::$app->errorHandler->exception === null)
+            echo $this->render("adminLeftBlock");
+        ?>
 
         <?= $content ?>
 
