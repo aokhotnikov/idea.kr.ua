@@ -53,6 +53,8 @@ AppAsset::register($this);
 
         <?= $this->render("authentication"); ?>
 
+        <?= $this->render("formEmailEnter"); ?>
+
         <?php if (isset($this->params['activeTags'])): ?>
 
             <?= $this->render("leftBlock", ['activeTags' => $this->params['activeTags']]); ?>

@@ -34,15 +34,24 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
     <p>
         <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+
+        <?php if ($model->banned) :?>
+
+        <?= Html::a('Разбанить', ['change-ban', 'id' => $model->id, 'ban' => 0], [
+            'class' => 'btn btn-success',
+        ]) ?>
+
+        <?php else : ?>
+
         <?= Html::a('Забанить', ['change-ban', 'id' => $model->id, 'ban' => 1], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Вы действительно хотите забанить пользователя?',
             ],
         ]) ?>
-        <?= Html::a('Разбанить', ['change-ban', 'id' => $model->id, 'ban' => 0], [
-            'class' => 'btn btn-success',
-        ]) ?>
+
+        <?php endif; ?>
+
     </p>
 
 </div>

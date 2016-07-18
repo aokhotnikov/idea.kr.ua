@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\AddForm;
+use app\models\EmailForm;
 use app\models\Posts;
 use app\models\RegForm;
 use app\models\Tags;
@@ -236,5 +237,24 @@ class MainController extends Controller
         $tags = ArrayHelper::map(Tags::find('name')->all(), 'name', 'name');
 
         return $this->render('add-idea', ['model' => $model, 'tags' => $tags]);
+    }
+
+    public function actionAddEmail()
+    {
+        $model = new EmailForm();
+
+        //  ----  AJAX валидация  ----
+        if(Yii::$app->request->isAjax && Yii::$app->request->isPost){
+            if ($model->load(Yii::$app->request->post())) {//пришли POST данные
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+            }
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->checkAddEmail()) {
+            return $this->refresh();
+        }
+
+        return $this->goHome();
     }
 }

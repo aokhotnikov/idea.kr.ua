@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'yii\grid\ActionColumn',
                 'controller' => 'users',
-                'template' => '{update}{view}{change-ban}',
+                'template' => '{update}<br>{view}<br>{change-ban}',
                 'buttons' => [
                     'update' => function ($url, $model, $key) {
                         return Html::a('<span class="glyphicon glyphicon-edit"></span>', $url, [
@@ -48,10 +48,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                     'change-ban' => function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-minus-sign"></span>', $url.'&ban=1', [
-                            'title' => 'Забанить',
-                            'data-confirm' => 'Вы действительно хотите забанить пользователя '.$model->firstname.'?',
-                        ]);
+                        return $model->banned
+                            ?   Html::a('<span class="glyphicon glyphicon-plus-sign"></span>', $url.'&ban=0', [
+                                    'title' => 'Разбанить'
+                                ])
+                            :   Html::a('<span class="glyphicon glyphicon-minus-sign"></span>', $url.'&ban=1', [
+                                    'title' => 'Забанить',
+                                    'data-confirm' => 'Вы действительно хотите забанить пользователя '.$model->firstname.'?',
+                                ]);
                     }
                 ]
             ],
