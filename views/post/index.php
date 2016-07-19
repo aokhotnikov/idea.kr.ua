@@ -1,6 +1,8 @@
 <?php
 /* @var $this yii\web\View */
 use yii\helpers\Html;
+use yii\db\Query;
+
 
 $this->title = "Предложи идею";
 $this->registerMetaTag(['name' => 'keywords', 'content' => 'Идея, новая, предложить']);
@@ -56,9 +58,14 @@ $this->params['activeTags'] = 'all';
                             </li>
                             <?php
                         }
+                        $one = 1;
+                        $com = (new Query())
+                            ->select('c.post_id, count(*) as num')
+                            ->from('comments c')
+                            ->where('c.post_id = '.$post[id].' and c.is_moderate = '.$one.'')->all();
                         ?>
                     </ul>
-                    <div class="news-date"><i class="fa fa-comments-o"></i> Комментариев: <?= $post["comments"] ?>
+                    <div class="news-date"><i class="fa fa-comments-o"></i> <a href=/comment/<?= $post["id"] ?>> Комментариев: </a> <?= $com[0]["num"]; ?>
                     </div>
                 </div>
                 <div class="clearfix"></div>
