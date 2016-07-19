@@ -25,7 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'status',
                 'value' => $model->status == 'new' ? 'Новый' : ($model->status == 'isApproved' ? 'Утверждён' : 'Отклонён')
             ],
-            'user_id',
+            [
+                'attribute' => 'user_id',
+                'value' => $model->getUserFirstname()
+            ],
             'like',
             'dislike',
             'comments',

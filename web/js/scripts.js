@@ -61,222 +61,6 @@ jQuery(document).ready(function () {
     );
 
 
-
-
-
-    //Main slider
-
-    $('#mainpage-slider').royalSlider({
-
-        transitionType: 'fade',
-
-        arrowsNav: false,
-
-        fadeinLoadedSlide: true,
-
-        controlNavigationSpacing: 0,
-
-        controlNavigation: 'thumbnails',
-
-        thumbs: {
-
-            autoCenter: false,
-
-            fitInViewport: true,
-
-            orientation: 'vertical',
-
-            spacing: 0,
-
-            paddingBottom: 0
-
-        },
-
-        keyboardNavEnabled: true,
-
-        imageScaleMode: 'fill',
-
-        imageAlignCenter: true,
-
-        slidesSpacing: 0,
-
-        loop: false,
-
-        loopRewind: true,
-
-        numImagesToPreload: 2,
-
-    });
-
-
-
-
-
-    //Special scroll
-
-    $.mCustomScrollbar.defaults.scrollButtons.enable = true;
-
-    $.mCustomScrollbar.defaults.axis = "y";
-
-    $('.special-news').mCustomScrollbar({theme: "dark-thin"});
-
-
-
-
-
-    //Main feedbacks
-
-    $('.feedback-block .bxslider').bxSlider({
-
-        controls: false,
-
-        adaptiveHeight: true,
-
-        onSlideAfter: function (currentSlideNumber, totalSlideQty, currentSlideHtmlObject) {
-
-            $('.feedback-block .active-slide').removeClass('active-slide');
-
-            $('.feedback-block .bxslider>li').eq(currentSlideHtmlObject + 1).addClass('active-slide')
-
-        },
-
-        onSliderLoad: function () {
-
-            $('.feedback-block .bxslider>li').eq(1).addClass('active-slide')
-
-        }
-
-    });
-
-    $('.feedbtn').click(function () {
-
-        $('#Feedback_image').click();
-
-    })
-
-    $('#Feedback_image').change(function () {
-
-        $('.fotochoose').css('display', 'block');
-
-    })
-
-
-
-
-
-    //Crowdfunding slider
-
-    //$('.crowdfund-bxslider').bxSlider({
-
-    //pagerCustom: '#bx-pager2',
-
-    //mode: 'vertical',
-
-    //controls: false
-
-    //});
-
-
-
-
-
-    $('.album-slider').bxSlider({
-
-        minSlides: 3,
-
-        maxSlides: 3,
-
-        slideWidth: 340,
-
-        slideMargin: 30,
-
-        pager: false,
-
-        infiniteLoop: false,
-
-        hideControlOnEnd: true
-
-    });
-
-
-
-    $('.news-slider').bxSlider({
-
-        minSlides: 2,
-
-        maxSlides: 2,
-
-        slideWidth: 300,
-
-        slideMargin: 30,
-
-        pager: false,
-
-        infiniteLoop: false,
-
-        hideControlOnEnd: true
-
-    });
-
-
-
-
-
-    //Tender button
-
-    $('.btn-tender').click(function () {
-
-        if ($(this).hasClass('collapsed')) {
-
-            $(this).html('Скрыть тендер');
-
-        } else {
-
-            $(this).html('Раскрыть тендер');
-
-        }
-
-        ;
-
-    });
-
-
-
-    //Vacancies button
-
-    $('.btn-vacancy').click(function () {
-
-        if ($(this).hasClass('collapsed')) {
-
-            $(this).html('Скрыть вакансию');
-
-        } else {
-
-            $(this).html('Раскрыть вакансию');
-
-        }
-
-        ;
-
-    });
-
-
-
-
-    //3D tour
-    $('.tour-link').click(function (e) {
-		e.preventDefault();
-		var target_3d = $(this).attr('href');
-		$(target_3d).addClass('visible');
-    });
-    $('.btn-close-3d').click(function () {
-		$('.tour').removeClass('visible');
-    });
-
-
-
-
-
     //Scroll to top, croudfund button, scroll down
 
     $(window).scroll(function () {
@@ -309,46 +93,7 @@ jQuery(document).ready(function () {
 
     });
 
-
-
-
-
-    //Video show
-
-    $('.video-item').fancybox({
-
-        openEffect: 'none',
-
-        closeEffect: 'none',
-
-        helpers: {
-
-            media: {}
-
-        }
-
-    });
-
-
-
-
-
 });
-
-
-
-
-
-$(window).resize(function () {
-
-    //Special scroll
-
-    $('.special-news').mCustomScrollbar("update");
-
-});
-
-
-
 
 
 $(function () {
@@ -419,13 +164,24 @@ $(function () {
 
     });
 
+});
 
-    $('#tags').select2({
-        language: "ru",
-        placeholder: "Можете ввести категорию или выбрать из списка...",
-        maximumSelectionLength: 5,
-        //tokenSeparators: [',', ' '],
-        tags: true
+function addVote(vote){
+    $.ajax({
+        url: 'main/add-vote?vote='+vote,
+        type: "GET",
+        //dataType: "json",
+        success: function (response) {
+             if (response) alert('Ваш голос принят');
+        }
     });
+}
 
+
+$('#tags').select2({
+    language: "ru",
+    placeholder: "Можете ввести категорию или выбрать из списка...",
+    maximumSelectionLength: 5,
+    //tokenSeparators: [',', ' '],
+    tags: true
 });

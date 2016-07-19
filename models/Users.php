@@ -20,6 +20,8 @@ use Yii;
  * @property string $auth_key
  * @property string $vk_id
  * @property string $fb_id
+ *
+ * @property Posts[] $posts
  */
 class Users extends \yii\db\ActiveRecord
 {
@@ -82,6 +84,14 @@ class Users extends \yii\db\ActiveRecord
             'fb_id' => 'Facebook код',
             'vk_id' => 'Vkontakte код',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPosts()
+    {
+        return $this->hasMany(Posts::className(), ['user_id' => 'id']);
     }
 
     public function insertRecord($arrayAttributes)

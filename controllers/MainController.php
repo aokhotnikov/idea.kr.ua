@@ -260,4 +260,9 @@ class MainController extends Controller
 
         return $this->goHome();
     }
+
+    public function actionAddVote($vote)
+    {
+        return true;
+    }
 }

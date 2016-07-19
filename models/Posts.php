@@ -19,6 +19,8 @@ use yii\helpers\ArrayHelper;
  * @property integer $comments
  * @property string $text
  * @property integer $completed
+ *
+ * @property Users $user
  * @property TagsPosts[] $tagsPosts
  */
 class Posts extends \yii\db\ActiveRecord
@@ -47,6 +49,7 @@ class Posts extends \yii\db\ActiveRecord
             [['short_text'], 'string', 'max' => 500],
             [['text'], 'string', 'max' => 3000],
             [['title'], 'unique'],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -76,6 +79,14 @@ class Posts extends \yii\db\ActiveRecord
     public function getTagsPosts()
     {
         return $this->hasMany(TagsPosts::className(), ['post_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserFirstname()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'user_id'])->one()->firstname;
     }
 
     public function insertRecord($formData)
