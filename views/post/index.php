@@ -29,9 +29,9 @@ $this->params['activeTags'] = 'all';
             <!-- Idea -->
             <div class="idea-block">
                 <div class="left-block">
-                    <a href="#" onclick="<?= Yii::$app->user->isGuest ? "$('#btn-auth').click()" : ''?>" class="btn btn-idea-up"><i
+                    <a href="#" onclick="<?= Yii::$app->user->isGuest ? "$('#modalFormAuth').modal('show');" : (preg_match("/[0-9]*@idea.net/", Yii::$app->user->identity->email) ? "$('#modalFormEmailEnter').modal('show');" : "location.href = 'main/add-vote'")?>" class="btn btn-idea-up"><i
                             class="fa fa-thumbs-o-up"></i></a>
-                    <a href="#" onclick="<?= Yii::$app->user->isGuest ? "$('#btn-auth').click()" : ''?>" class="btn btn-idea-down"><i
+                    <a href="#" onclick="<?= Yii::$app->user->isGuest ? "$('#modalFormAuth').modal('show');" : (preg_match("/[0-9]*@idea.net/", Yii::$app->user->identity->email) ? "$('#modalFormEmailEnter').modal('show');" : "location.href = 'main/add-vote'")?>" class="btn btn-idea-down"><i
                             class="fa fa-thumbs-o-down"></i></a>
 
                     <p class="idea-status"><span class="itog">Всего:</span><span
