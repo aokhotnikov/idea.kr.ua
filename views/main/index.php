@@ -1,6 +1,7 @@
 <?php
 /* @var $this yii\web\View */
 use yii\widgets\LinkPager;
+use yii\db\Query;
 
 $this->title = "Предложи идею";
 $this->registerMetaTag(['name' => 'keywords', 'content' => 'Идея, новая, предложить']);
@@ -88,7 +89,24 @@ $activeTags = str_replace (' ', '+', $activeTags);
                             }
                             ?>
                         </ul>
-                        <div class="news-date"><i class="fa fa-comments-o"></i> Комментариев: <?= $post["comments"] ?>
+                        <?php
+                        $one = 1;
+                        $com = (new Query())
+                            ->select('c.post_id, count(*) as num')
+                            ->from('comments c')
+                            ->where('c.post_id = '.$post[id].' and c.is_moderate = '.$one.'')->all();
+                        ?>
+                        <div class="news-date"><i class="fa fa-comments-o"></i>
+                            <?php if($com[0]["num"]==0){
+                                $url_comments = "/comment/";
+                            }else{
+                                $url_comments = "/comment/";
+                            }
+                            ?>
+                            <a href=<?=$url_comments?><?= $post["id"] ?>> Комментариев: </a>
+                            <?=
+                            $com[0]["num"];
+                            ?>
                         </div>
                     </div>
                     <div class="clearfix"></div>

@@ -12,6 +12,7 @@ use yii\helpers\ArrayHelper;
  * @property string $title
  * @property string $short_text
  * @property string $date_publ
+ * @property string $status
  * @property integer $user_id
  * @property integer $like
  * @property integer $dislike
@@ -22,6 +23,8 @@ use yii\helpers\ArrayHelper;
  */
 class Posts extends \yii\db\ActiveRecord
 {
+
+    public $tagz;
     /**
      * @inheritdoc
      */
@@ -40,6 +43,7 @@ class Posts extends \yii\db\ActiveRecord
             [['date_publ'], 'safe'],
             [['user_id', 'like', 'dislike', 'comments', 'completed'], 'integer'],
             [['title'], 'string', 'max' => 128],
+            [['status'], 'string'],
             [['short_text'], 'string', 'max' => 500],
             [['text'], 'string', 'max' => 3000],
             [['title'], 'unique'],
@@ -53,15 +57,16 @@ class Posts extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'short_text' => 'Short Text',
-            'date_publ' => 'Date Publ',
-            'user_id' => 'User ID',
-            'like' => 'Like',
-            'dislike' => 'Dislike',
-            'comments' => 'Comments',
-            'text' => 'Text',
-            'completed' => 'Completed',
+            'title' => 'Тема',
+            'short_text' => 'Короткий текст',
+            'date_publ' => 'Дата создания',
+            'status' => 'Статус',
+            'user_id' => 'Автор',
+            'like' => 'Кол-во Like',
+            'dislike' => 'Кол-во Dislike',
+            'comments' => 'Кол-во комментариев',
+            'text' => 'Текст',
+            'completed' => 'Завершён',
         ];
     }
 
@@ -87,10 +92,21 @@ class Posts extends \yii\db\ActiveRecord
         //echo '<pre>';print_r($formData["tags"]);echo '</pre>';die; // for debag
 
         if ($this->save()) {
-            foreach ($formData["tags"] as $tag_id) {
-                $model = new TagsPosts(); // добавляю связки в таблицу tags_posts
-                if (!$model->insertRecord($this->id, $tag_id + 1)) {
-                    return false;
+            if ($formData["tags"]) { //Если пользователь ввёл какие-то теги
+                foreach ($formData["tags"] as $tag) {
+                    $query = Tags::find()->where(['name' => $tag])->one();
+                    $tag_id = $query["id"];
+                    if (!$tag_id) { // если в таблице "Tags" нет такого тега
+                        //echo '<pre>';print_r($query);echo '</pre>'; // for debag
+                        $modelTags = new Tags();
+                        $modelTags->name = $tag;
+                        $modelTags->save(); //save new tag
+                        $tag_id = $modelTags->id;
+                    }
+                    $modelTagsPosts = new TagsPosts(); // добавляю связки в таблицу "Tags_posts"
+                    if (!$modelTagsPosts->insertRecord($this->id, $tag_id)) {
+                        return false;
+                    }
                 }
             }
             return true;

@@ -6,6 +6,7 @@ use Yii;
 use app\models\Users;
 use app\models\UsersSearch;
 use yii\web\Controller;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -14,21 +15,17 @@ use yii\filters\VerbFilter;
  */
 class UsersController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
+    public function beforeAction($action)
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
+        if (parent::beforeAction($action)) {
+            if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin) {
+                return true;
+            }
+            throw new HttpException(404 ,'Page not found');
+        } else {
+            return false;
+        }
     }
-
     /**
      * Lists all Users models.
      * @return mixed
@@ -57,24 +54,6 @@ class UsersController extends Controller
     }
 
     /**
-     * Creates a new Users model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Users();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
      * Updates an existing Users model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -93,19 +72,15 @@ class UsersController extends Controller
         }
     }
 
-    /**
-     * Deletes an existing Users model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
+    public function actionChangeBan($id, $ban)
     {
-        $this->findModel($id)->delete();
+        $user = $this->findModel($id);
+        $user->banned = $ban ? 1 : 0;
 
-        return $this->redirect(['index']);
+        if ($user->save()){
+            return $this->redirect(['view', 'id' => $user->id]);
+        }
     }
-
     /**
      * Finds the Users model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

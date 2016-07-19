@@ -70,6 +70,7 @@ $config = [
                 'add' => 'main/add-idea',
                 'logout' => 'auth/logout',
                 'post/<id:\d+>' => 'post/index',
+                'comment/<id:\d+>' => 'post/comments',
             ],
         ],
 
