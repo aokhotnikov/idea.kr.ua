@@ -30,7 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'dislike',
             'comments',
             'text',
-            'completed',
+            [
+                'attribute' => 'completed',
+                'value' => $model->completed ? 'Да' : 'Нет'
+            ],
         ],
     ]) ?>
 

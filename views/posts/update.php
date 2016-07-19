@@ -28,7 +28,22 @@ foreach ($masTags as $tag){
 
     <?= $form->field($model, 'short_text')->textArea(['rows' => 3]) ?>
 
-    <?= $form->field($model, 'date_publ')->textInput() ?>
+    <?= $form->field($model, 'date_publ')->widget(
+        'trntv\yii\datetime\DateTimeWidget',
+        [
+            'phpDatetimeFormat' => 'yyyy-MM-dd\'T\'HH:mm:ssZZZZZ',
+            'clientOptions' => [
+                'minDate' => new \yii\web\JsExpression('new Date("2016-06-01")'),
+                'allowInputToggle' => false,
+                'sideBySide' => true,
+                'locale' => 'ru',
+                'widgetPositioning' => [
+                    'horizontal' => 'auto',
+                    'vertical' => 'auto'
+                ]
+            ]
+        ]
+    ) ?>
 
     <?= $form->field($model, 'user_id')->textInput() ?>
 
