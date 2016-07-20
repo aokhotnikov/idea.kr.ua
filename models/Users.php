@@ -22,6 +22,7 @@ use Yii;
  * @property string $fb_id
  *
  * @property Posts[] $posts
+ * @property Votes[] $votes
  */
 class Users extends \yii\db\ActiveRecord
 {
@@ -92,6 +93,14 @@ class Users extends \yii\db\ActiveRecord
     public function getPosts()
     {
         return $this->hasMany(Posts::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVotes()
+    {
+        return $this->hasMany(Votes::className(), ['user_id' => 'id']);
     }
 
     public function insertRecord($arrayAttributes)

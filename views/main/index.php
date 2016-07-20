@@ -59,9 +59,19 @@ $activeTags = str_replace (' ', '+', $activeTags);
                 <!-- Idea -->
                 <div class="idea-block">
                     <div class="left-block">
-                        <a href="#" onclick="<?= Yii::$app->user->isGuest ? "$('#modalFormAuth').modal('show');" : (preg_match("/[0-9]*@idea.net/", Yii::$app->user->identity->email) ? "$('#modalFormEmailEnter').modal('show');" : "addVote(1)")?>" class="btn btn-idea-up">
+                        <a onclick="<?= Yii::$app->user->isGuest
+                                            ?   "$('#modalFormAuth').modal('show');"
+                                            :   (preg_match("/[0-9]*@idea.net/", Yii::$app->user->identity->email)
+                                                ?   "$('#modalFormEmailEnter').modal('show');"
+                                                :   "addVote(1,".$post['id'].")")?>"
+                           class="btn btn-idea-up vote-up-<?= $post["id"] ?>">
                             <i class="fa fa-thumbs-o-up"></i></a>
-                        <a href="#" onclick="<?= Yii::$app->user->isGuest ? "$('#modalFormAuth').modal('show');" : (preg_match("/[0-9]*@idea.net/", Yii::$app->user->identity->email) ? "$('#modalFormEmailEnter').modal('show');" : "location.href = 'main/add-vote'")?>" class="btn btn-idea-down">
+                        <a onclick="<?= Yii::$app->user->isGuest
+                                            ?   "$('#modalFormAuth').modal('show');"
+                                            :   (preg_match("/[0-9]*@idea.net/", Yii::$app->user->identity->email)
+                                                ?   "$('#modalFormEmailEnter').modal('show');"
+                                                :   "addVote(0,".$post['id'].")")?>"
+                           class="btn btn-idea-down vote-down-<?= $post["id"] ?>">
                             <i class="fa fa-thumbs-o-down"></i></a>
 
                         <p class="idea-status"><span class="itog">Всего:</span><span

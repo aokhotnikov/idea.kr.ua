@@ -263,6 +263,6 @@ class MainController extends Controller
 
     public function actionAddVote($vote)
     {
-        return true;
+        return $vote ? true : false;
     }
 }

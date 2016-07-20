@@ -22,6 +22,7 @@ use yii\helpers\ArrayHelper;
  *
  * @property Users $user
  * @property TagsPosts[] $tagsPosts
+ * @property Votes[] $votes
  */
 class Posts extends \yii\db\ActiveRecord
 {
@@ -84,9 +85,25 @@ class Posts extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getUser()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getUserFirstname()
     {
         return $this->hasOne(Users::className(), ['id' => 'user_id'])->one()->firstname;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVotes()
+    {
+        return $this->hasMany(Votes::className(), ['post_id' => 'id']);
     }
 
     public function insertRecord($formData)
