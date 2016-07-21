@@ -73,7 +73,7 @@ $activeTags = str_replace (' ', '+', $activeTags);
                             <i class="fa fa-thumbs-o-down"></i></a>
 
                         <p class="idea-status"><span class="itog">Всего:</span><span
-                                class="votes-count"><?= $post["like"] + $post["dislike"] ?></span></p>
+                                class="votes-count-<?= $post["id"] ?>"><?= $post["like"] + $post["dislike"] ?></span></p>
                     </div>
                     <div class="right-block">
                         <a href="/post/<?= $post["id"] ?>" class="idea-name"><?= $post["title"] ?></a>

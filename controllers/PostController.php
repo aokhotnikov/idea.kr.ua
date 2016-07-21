@@ -29,19 +29,18 @@ class PostController extends \yii\web\Controller
 
             $user_id = Yii::$app->user->identity->getId();
 
-            if (Votes::find()->where('user_id = '.$user_id.' and post_id = '.$post_id)->one()) //пользователь уже проголосовал
-                return false;
-            else {
+            if (!Votes::find()->where('user_id = '.$user_id.' and post_id = '.$post_id)->one()) {//пользователь ещё не проголосовал
                 $model = new Votes();
                 $model->post_id = $post_id;
                 $model->user_id = $user_id;
                 $model->like_id = $vote;
                 if ($model->save()) {
                     $idea = Posts::findOne($post_id);
-                    $vote ? $idea->updateCounters(['like' => 1]) : $idea->updateCounters(['dislike' => 1]);
+                    $idea->updateCounters($vote ? ['like' => 1] : ['dislike' => 1]);
                     return true;
                 }
             }
+            return false;
         }
     }
 

@@ -54,6 +54,8 @@ function addVote(vote,post_id){
                         autoHideDelay: 1000
                     });
                 }
+                var numVotes = $('.votes-count-' + post_id).text();
+                $('.votes-count-' + post_id).text(++numVotes);
             }else{
                 $('.vote-up-' + post_id).notify("Вы уже проголосовали за эту идею", {
                     className: "info",

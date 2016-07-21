@@ -42,7 +42,7 @@ $haveEmail = !Yii::$app->user->isGuest ? preg_match("/[0-9]*@idea.net/", Yii::$a
                         <i class="fa fa-thumbs-o-down"></i></a>
 
                     <p class="idea-status"><span class="itog">Всего:</span><span
-                            class="votes-count"><?= $post["like"] + $post["dislike"] ?></span></p>
+                            class="votes-count-<?= $post["id"] ?>"><?= $post["like"] + $post["dislike"] ?></span></p>
                 </div>
                 <div class="right-block">
 
