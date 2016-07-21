@@ -32,6 +32,7 @@ foreach ($masTags as $tag){
         'trntv\yii\datetime\DateTimeWidget',
         [
             'phpDatetimeFormat' => 'yyyy-MM-dd\'T\'HH:mm:ssZZZZZ',
+            'momentDatetimeFormat' => 'YYYY-MM-DD HH:mm:ssZ',
             'clientOptions' => [
                 'minDate' => new \yii\web\JsExpression('new Date("2016-06-01")'),
                 'allowInputToggle' => false,

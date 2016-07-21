@@ -54,23 +54,21 @@ $activeTags = str_replace (' ', '+', $activeTags);
     <div id="news-list" class="list-view">
         <div class="items">
 
-            <?php foreach ($posts as $post) { ?>
+            <?php
+            $haveEmail = !Yii::$app->user->isGuest ? preg_match("/[0-9]*@idea.net/", Yii::$app->user->identity->email) : "";
+            foreach ($posts as $post) { ?>
 
                 <!-- Idea -->
                 <div class="idea-block">
                     <div class="left-block">
                         <a onclick="<?= Yii::$app->user->isGuest
                                             ?   "$('#modalFormAuth').modal('show');"
-                                            :   (preg_match("/[0-9]*@idea.net/", Yii::$app->user->identity->email)
-                                                ?   "$('#modalFormEmailEnter').modal('show');"
-                                                :   "addVote(1,".$post['id'].")")?>"
+                                            :   ( $haveEmail  ?  "$('#modalFormEmailEnter').modal('show');"  :  "addVote(1,".$post['id'].")") ?>"
                            class="btn btn-idea-up vote-up-<?= $post["id"] ?>">
                             <i class="fa fa-thumbs-o-up"></i></a>
                         <a onclick="<?= Yii::$app->user->isGuest
                                             ?   "$('#modalFormAuth').modal('show');"
-                                            :   (preg_match("/[0-9]*@idea.net/", Yii::$app->user->identity->email)
-                                                ?   "$('#modalFormEmailEnter').modal('show');"
-                                                :   "addVote(0,".$post['id'].")")?>"
+                                            :   ( $haveEmail  ?  "$('#modalFormEmailEnter').modal('show');"  :  "addVote(0,".$post['id'].")") ?>"
                            class="btn btn-idea-down vote-down-<?= $post["id"] ?>">
                             <i class="fa fa-thumbs-o-down"></i></a>
 

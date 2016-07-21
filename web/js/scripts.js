@@ -37,20 +37,28 @@ jQuery(document).ready(function () {
 
 function addVote(vote,post_id){
     $.ajax({
-        url: 'main/add-vote?vote='+vote,
+        url: '/add-vote?vote='+vote+'&post_id='+post_id,
         type: "GET",
         //dataType: "json",
         success: function (response) {
             if (response){
-                $('.vote-up-'+post_id).notify("Ваш голос принят", {
-                    className: "success",
+                if (vote) {
+                    $('.vote-up-' + post_id).notify("Ваш голос принят", {
+                        className: "success",
+                        autoHideDelay: 1000,
+                        position: "right"
+                    });
+                }else {
+                    $('.vote-down-' + post_id).notify("Ваш голос принят", {
+                        className: "success",
+                        autoHideDelay: 1000
+                    });
+                }
+            }else{
+                $('.vote-up-' + post_id).notify("Вы уже проголосовали за эту идею", {
+                    className: "info",
                     autoHideDelay: 1000,
-                    position : "right"
-                })
-            }else {
-                $('.vote-down-'+post_id).notify("Ваш голос принят", {
-                    className: "success" ,
-                    autoHideDelay: 1000
+                    position: "right"
                 });
             }
         }

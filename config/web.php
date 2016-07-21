@@ -68,6 +68,7 @@ $config = [
                 'about' => 'main/about',
                 'registration' => 'main/registration',
                 'add' => 'main/add-idea',
+                'add-vote' => 'post/add-vote',
                 'logout' => 'auth/logout',
                 'post/<id:\d+>' => 'post/index',
             ],

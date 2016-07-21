@@ -11,6 +11,7 @@ $this->registerLinkTag([
     'href' => 'src/favicon.ico',
 ]);
 $this->params['activeTags'] = 'all';
+$haveEmail = !Yii::$app->user->isGuest ? preg_match("/[0-9]*@idea.net/", Yii::$app->user->identity->email) : "";
 ?>
 <div class="ideas-center">
     <!-- Ideas sorting -->
@@ -29,10 +30,16 @@ $this->params['activeTags'] = 'all';
             <!-- Idea -->
             <div class="idea-block">
                 <div class="left-block">
-                    <a href="#" onclick="<?= Yii::$app->user->isGuest ? "$('#modalFormAuth').modal('show');" : (preg_match("/[0-9]*@idea.net/", Yii::$app->user->identity->email) ? "$('#modalFormEmailEnter').modal('show');" : "location.href = 'main/add-vote'")?>" class="btn btn-idea-up"><i
-                            class="fa fa-thumbs-o-up"></i></a>
-                    <a href="#" onclick="<?= Yii::$app->user->isGuest ? "$('#modalFormAuth').modal('show');" : (preg_match("/[0-9]*@idea.net/", Yii::$app->user->identity->email) ? "$('#modalFormEmailEnter').modal('show');" : "location.href = 'main/add-vote'")?>" class="btn btn-idea-down"><i
-                            class="fa fa-thumbs-o-down"></i></a>
+                    <a onclick="<?= Yii::$app->user->isGuest
+                                        ?   "$('#modalFormAuth').modal('show');"
+                                        :   ( $haveEmail  ?  "$('#modalFormEmailEnter').modal('show');"  :  "addVote(1,".$post['id'].")") ?>"
+                       class="btn btn-idea-up vote-up-<?= $post["id"] ?>">
+                        <i class="fa fa-thumbs-o-up"></i></a>
+                    <a onclick="<?= Yii::$app->user->isGuest
+                                        ?   "$('#modalFormAuth').modal('show');"
+                                        :   ( $haveEmail  ?  "$('#modalFormEmailEnter').modal('show');"  :  "addVote(0,".$post['id'].")") ?>"
+                       class="btn btn-idea-down vote-down-<?= $post["id"] ?>">
+                        <i class="fa fa-thumbs-o-down"></i></a>
 
                     <p class="idea-status"><span class="itog">Всего:</span><span
                             class="votes-count"><?= $post["like"] + $post["dislike"] ?></span></p>
