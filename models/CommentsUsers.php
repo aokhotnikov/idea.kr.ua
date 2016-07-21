@@ -64,4 +64,12 @@ class CommentsUsers extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Comments::className(), ['id' => 'com_id']);
     }
+
+    public function insertRecord($com_id, $user_id)
+    {
+        $this->com_id = $com_id;
+        $this->user_id = $user_id;
+
+        return $this->save() ? true : false;
+    }
 }

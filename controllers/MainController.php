@@ -170,7 +170,7 @@ class MainController extends Controller
     {
         $query = (new Query())
             ->select(['p.*', 'u.firstname', "GROUP_CONCAT(DISTINCT t.name ORDER BY t.name ASC SEPARATOR ',') as tags",
-                     "(select count(*) from comments_posts cp where cp.post_id = p.id) as comments"])
+                     "(select count(*) from comments_posts cp where cp.post_id = p.id) as comments", '(p.like - p.dislike) as rating'])
             ->from('users u, posts p, tags t, tags_posts tp')
             ->where('p.user_id = u.id and p.id = tp.post_id and t.id = tp.tag_id')
             ->andWhere('p.status = "isApproved"')
@@ -183,7 +183,7 @@ class MainController extends Controller
         if ($sort == 1)
             $query->addOrderBy('date_publ desc');
         elseif ($sort == 2)
-            $query->addOrderBy('like desc');
+            $query->addOrderBy('rating desc');
         elseif ($sort == 3) {
             $query->andWhere('p.completed = 1');
             $query->addOrderBy('completed desc');

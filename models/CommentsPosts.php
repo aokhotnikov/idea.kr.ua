@@ -64,4 +64,12 @@ class CommentsPosts extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Posts::className(), ['id' => 'post_id']);
     }
+
+    public function insertRecord($com_id, $post_id)
+    {
+        $this->com_id = $com_id;
+        $this->post_id = $post_id;
+
+        return $this->save() ? true : false;
+    }
 }

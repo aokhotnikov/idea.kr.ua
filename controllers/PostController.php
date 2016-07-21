@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\CommentForm;
+use app\models\Comments;
 use app\models\Posts;
 use app\models\Votes;
 use Yii;
@@ -12,14 +14,35 @@ class PostController extends \yii\web\Controller
     {
         $id = Yii::$app->request->get('id');
         if($id) {
-            $query = Yii::$app->db->createCommand('
-                select p.*, u.firstname, GROUP_CONCAT(DISTINCT t.name ORDER BY t.name ASC SEPARATOR ",") AS tags,
-                      (select count(*) from comments_posts cp where cp.post_id = p.id) as comments
-                from users u, posts p, tags t, tags_posts tp
-                where p.user_id = u.id and p.id = tp.post_id and t.id = tp.tag_id and p.id = :id
-			    group by p.id')->bindValue(':id', $id)->queryOne();
-            //echo '<pre>';print_r($query);echo '</pre>';die; // for debag
-            return $this->render('index', ['post' => $query]);
+
+            $model = new CommentForm();
+
+            if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+                $record = new Comments();//model
+
+                if ($record->insertRecord($model->text, $id)) {
+                    Yii::$app->session->setFlash('commentAddSubmitted'); //Flash message
+                    return $this->refresh();
+                }
+            }
+
+            $post = Yii::$app->db->createCommand('
+                SELECT p.*, u.firstname, GROUP_CONCAT(t.name ORDER BY t.name ASC SEPARATOR ",") AS tags,
+                      (SELECT count(*) FROM comments_posts cp WHERE cp.post_id = p.id) AS comments
+                FROM users u, posts p, tags t, tags_posts tp
+                WHERE p.user_id = u.id and p.id = tp.post_id and t.id = tp.tag_id and p.id = :id')->bindValue(':id', $id)->queryOne();
+
+            //echo '<pre>';print_r($post);echo '</pre>';die; // for debag
+
+            $comments = Yii::$app->db->createCommand('
+                SELECT c.*, u.firstname FROM comments c
+                left join comments_posts cp on c.id = cp.com_id
+                left join comments_users cu on c.id = cu.com_id
+                left join users u on cu.user_id = u.id
+                WHERE  post_id = :id')->bindValue(':id', $id)->queryAll();
+
+            return $this->render('index', ['post' => $post, 'comments' => $comments, 'model' => $model]);
         }
         return $this->goBack();
     }

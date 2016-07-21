@@ -503,6 +503,38 @@ html .input-group-addon, html .input-group-btn {
     margin-top: 8px;
 }
 
+/* Comments */
+
+.comments {
+    padding: 0 0 40px;
+}
+
+.tab-pane .comments {
+    padding: 0 15px 40px;
+}
+
+.comment-block {
+    padding: 25px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.comment-block img {
+    float: left;
+    margin-right: 10px;
+}
+
+.comment-info {
+    float: left;
+    width: 170px;
+    line-height: 1;
+}
+
+.comment-text {
+    overflow: hidden;
+    padding-left: 30px;
+    font-size: 13px;
+}
+
 /* Ideas */
 
 .idea-page-head {
