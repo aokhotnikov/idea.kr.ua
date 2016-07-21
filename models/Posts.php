@@ -20,6 +20,7 @@ use yii\helpers\ArrayHelper;
  * @property string $text
  * @property integer $completed
  *
+ * @property CommentsPosts[] $commentsPosts
  * @property Users $user
  * @property TagsPosts[] $tagsPosts
  * @property Votes[] $votes
@@ -71,6 +72,14 @@ class Posts extends \yii\db\ActiveRecord
             'text' => 'Текст',
             'completed' => 'Завершён',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCommentsPosts()
+    {
+        return $this->hasMany(CommentsPosts::className(), ['post_id' => 'id']);
     }
 
     /**

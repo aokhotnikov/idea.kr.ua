@@ -21,6 +21,7 @@ use Yii;
  * @property string $vk_id
  * @property string $fb_id
  *
+ * @property CommentsUsers[] $commentsUsers
  * @property Posts[] $posts
  * @property Votes[] $votes
  */
@@ -85,6 +86,14 @@ class Users extends \yii\db\ActiveRecord
             'fb_id' => 'Facebook код',
             'vk_id' => 'Vkontakte код',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCommentsUsers()
+    {
+        return $this->hasMany(CommentsUsers::className(), ['user_id' => 'id']);
     }
 
     /**
