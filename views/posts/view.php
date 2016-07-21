@@ -31,7 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'like',
             'dislike',
-            'comments',
             'text',
             [
                 'attribute' => 'completed',

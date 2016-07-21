@@ -13,7 +13,8 @@ class PostController extends \yii\web\Controller
         $id = Yii::$app->request->get('id');
         if($id) {
             $query = Yii::$app->db->createCommand('
-                select p.*, u.firstname, GROUP_CONCAT(DISTINCT t.name ORDER BY t.name ASC SEPARATOR ",") AS tags
+                select p.*, u.firstname, GROUP_CONCAT(DISTINCT t.name ORDER BY t.name ASC SEPARATOR ",") AS tags,
+                      (select count(*) from comments_posts cp where cp.post_id = p.id) as comments
                 from users u, posts p, tags t, tags_posts tp
                 where p.user_id = u.id and p.id = tp.post_id and t.id = tp.tag_id and p.id = :id
 			    group by p.id')->bindValue(':id', $id)->queryOne();

@@ -44,7 +44,7 @@ class Posts extends \yii\db\ActiveRecord
         return [
             [['title', 'short_text', 'date_publ', 'user_id', 'text'], 'required'],
             [['date_publ'], 'safe'],
-            [['user_id', 'like', 'dislike', 'comments', 'completed'], 'integer'],
+            [['user_id', 'like', 'dislike', 'completed'], 'integer'],
             [['title'], 'string', 'max' => 128],
             [['status'], 'string'],
             [['short_text'], 'string', 'max' => 500],
@@ -68,7 +68,6 @@ class Posts extends \yii\db\ActiveRecord
             'user_id' => 'Автор',
             'like' => 'Кол-во Like',
             'dislike' => 'Кол-во Dislike',
-            'comments' => 'Кол-во комментариев',
             'text' => 'Текст',
             'completed' => 'Завершён',
         ];

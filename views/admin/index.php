@@ -5,9 +5,9 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 
 
-$this->title = "Предложи идею";
-$this->registerMetaTag(['name' => 'keywords', 'content' => 'Идея, новая, предложить']);
-$this->registerMetaTag(['name' => 'description', 'content' => 'Генератор идей']);
+$this->title = "Админка";
+$this->registerMetaTag(['name' => 'keywords', 'content' => 'Админ']);
+$this->registerMetaTag(['name' => 'description', 'content' => 'Админ']);
 $this->registerLinkTag([
     'rel' => 'icon',
     'type' => 'image/x-icon',

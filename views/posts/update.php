@@ -52,8 +52,6 @@ foreach ($masTags as $tag){
 
     <?= $form->field($model, 'dislike')->textInput() ?>
 
-    <?= $form->field($model, 'comments')->textInput() ?>
-
     <?= $form->field($model, 'text')->textArea(['rows' => 15]) ?>
 
     <?= $form->field($model, 'completed')->dropDownList(['0' => 'Нет','1' => 'Да']) ?>
