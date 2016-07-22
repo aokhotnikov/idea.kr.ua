@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Comments';
+$this->title = 'Комментарии';
 ?>
 
 <!-- Comments sorting -->
