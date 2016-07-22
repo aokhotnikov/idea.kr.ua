@@ -8,9 +8,9 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Posts */
 
 $this->title = 'Редактирование идеи';
-$this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => 'Идеи', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Редактирование';
 
 $options = [];
 $masTags = ArrayHelper::getColumn($tags, 'name');
@@ -18,7 +18,6 @@ foreach ($masTags as $tag){
     $options[$tag] = ['Selected' => 'true'];
 }
 ?>
-<div class="posts-update ideas-center">
 
     <h2><?= Html::encode($this->title) ?></h2>
 
@@ -93,5 +92,3 @@ foreach ($masTags as $tag){
     </div>
 
     <?php ActiveForm::end(); ?>
-
-</div>

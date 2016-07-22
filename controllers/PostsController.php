@@ -6,6 +6,7 @@ use app\models\Tags;
 use app\models\TagsPosts;
 use Yii;
 use app\models\Posts;
+use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use yii\web\Controller;
 use yii\web\HttpException;
@@ -41,6 +42,28 @@ class PostsController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actionIndex($sort = 1)
+    {
+
+        $query = Posts::find()->select('id, date_publ, title')->orderBy('date_publ desc');
+
+        if ($sort == 1)
+            $query->andWhere('status = "new"');
+        elseif ($sort == 2)
+            $query->andWhere('status = "isApproved"');
+        elseif ($sort == 3) {
+            $query->andWhere('status = "isRejected"');
+        }
+
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 5,
+            ]
+        ]);
+        return $this->render('index', ['model' => $provider, 'activeLabelIdeaSort' => $sort]);
     }
 
 

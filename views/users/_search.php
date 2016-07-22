@@ -8,7 +8,6 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="users-search ideas-center">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -42,4 +41,4 @@ use yii\widgets\ActiveForm;
 
     <?php ActiveForm::end(); ?>
 
-</div>
+

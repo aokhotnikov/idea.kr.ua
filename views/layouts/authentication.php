@@ -1,7 +1,6 @@
 <?php
 use yii\bootstrap\Modal;
 use yii\widgets\ActiveForm;
-use yii\helpers\Html;
 use app\models\AuthForm;
 
 $model = new AuthForm();

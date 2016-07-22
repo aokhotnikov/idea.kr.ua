@@ -37,8 +37,8 @@ echo Nav::widget([
         !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin
             ?   [
                     'label' => 'Админ',
-                    'url' => ['/admin/index'],
-                    'active' => in_array(Yii::$app->controller->id, ['users', 'admin', 'posts']) // in_array - присутствует ли в массиве значение controllerа
+                    'url' => ['/posts/index'],
+                    'active' => in_array(Yii::$app->controller->id, ['users', 'comments', 'posts']) // in_array - присутствует ли в массиве значение controllerа
                 ]
             : "",
         !Yii::$app->user->isGuest

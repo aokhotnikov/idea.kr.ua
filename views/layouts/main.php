@@ -4,6 +4,7 @@
 
 use yii\helpers\Html;
 use app\assets\AppAsset;
+use yii\widgets\Breadcrumbs;
 
 AppAsset::register($this);
 ?>
@@ -62,8 +63,17 @@ AppAsset::register($this);
             echo $this->render("adminLeftBlock");
         ?>
 
-        <?= $content ?>
+        <!-- ---------------------------Ideas---------------------------- -->
+        <div class="ideas-center">
 
+            <?= Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            ]) ?>
+
+            <?= $content ?>
+
+        <!-- /Ideas -->
+        </div>
     </div>
 </div>
 <!-- /Page content -->

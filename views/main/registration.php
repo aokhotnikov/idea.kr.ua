@@ -13,36 +13,35 @@ $this->registerLinkTag([
 ]);
 $this->params['activeTags'] = 'all';
 ?>
-<div class="ideas-center">
-    <div class="user-form-lg">
-        <h1><?= Html::encode($this->title) ?></h1>
 
-        <?php if (Yii::$app->session->hasFlash('registrationSubmitted')): ?>
+<div class="user-form-lg">
+    <h1><?= Html::encode($this->title) ?></h1>
 
-            <div class="alert alert-success text-center">
-                Спасибо, <?= Yii::$app->user->identity->firstname ?>, что зарегистрировались :)
-            </div>
+    <?php if (Yii::$app->session->hasFlash('registrationSubmitted')): ?>
 
-        <?php else: ?>
+        <div class="alert alert-success text-center">
+            Спасибо, <?= Yii::$app->user->identity->firstname ?>, что зарегистрировались :)
+        </div>
 
-            <?php $form = ActiveForm::begin([
-                'enableClientValidation' => false, //клиентскую валидацию отключил (для дебага серверной или для AJAX валидации)
-                'enableAjaxValidation' => true,
-            ]); ?>
+    <?php else: ?>
 
-            <?= $form->field($model, 'fname')->label('Имя:') ?>
-            <?= $form->field($model, 'lname')->label('Фамилия:') ?>
-            <?= $form->field($model, 'email')->label('E-mail:') ?>
-            <?= $form->field($model, 'age')->label('Возраст') ?>
-            <?= $form->field($model, 'pass')->label('Пароль')->passwordInput() ?>
-            <?= $form->field($model, 'repass')->passwordInput() ?>
+        <?php $form = ActiveForm::begin([
+            'enableClientValidation' => false, //клиентскую валидацию отключил (для дебага серверной или для AJAX валидации)
+            'enableAjaxValidation' => true,
+        ]); ?>
 
-            <div class="form-group text-center">
-                <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']) ?>
-            </div>
+        <?= $form->field($model, 'fname')->label('Имя:') ?>
+        <?= $form->field($model, 'lname')->label('Фамилия:') ?>
+        <?= $form->field($model, 'email')->label('E-mail:') ?>
+        <?= $form->field($model, 'age')->label('Возраст') ?>
+        <?= $form->field($model, 'pass')->label('Пароль')->passwordInput() ?>
+        <?= $form->field($model, 'repass')->passwordInput() ?>
 
-            <?php ActiveForm::end(); ?>
+        <div class="form-group text-center">
+            <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']) ?>
+        </div>
 
-        <?php endif; ?>
-    </div>
+        <?php ActiveForm::end(); ?>
+
+    <?php endif; ?>
 </div>

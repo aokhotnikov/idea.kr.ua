@@ -13,114 +13,117 @@ $this->registerLinkTag([
     'href' => 'src/favicon.ico',
 ]);
 $this->params['activeTags'] = 'all';
-$haveEmail = !Yii::$app->user->isGuest ? preg_match("/[0-9]*@idea.net/", Yii::$app->user->identity->email) : "";
+$haveDummyEmail = !Yii::$app->user->isGuest ? preg_match("/[0-9]*@idea.net/", Yii::$app->user->identity->email) : "";
 ?>
-<div class="ideas-center">
-    <!-- Ideas sorting -->
-    <div class="small-page-navi">
-        <ul>
-            <li class="active"><a href="/">По времени публикации</a></li>
-            <li><a href="/?sort=2">Самые популярные</a></li>
-            <li><a href="/?sort=3">Реализованные идеи</a></li>
-        </ul>
-    </div>
-    <!-- /Ideas sorting -->
 
-    <div id="news-list" class="list-view">
-        <div class="items">
+<!-- Ideas sorting -->
+<div class="small-page-navi">
+    <ul>
+        <li class="active"><a href="/">По времени публикации</a></li>
+        <li><a href="/?sort=2">Самые популярные</a></li>
+        <li><a href="/?sort=3">Реализованные идеи</a></li>
+    </ul>
+</div>
+<!-- /Ideas sorting -->
 
-            <!-- Idea -->
-            <div class="idea-block">
-                <div class="left-block">
-                    <a onclick="<?= Yii::$app->user->isGuest
-                                        ?   "$('#modalFormAuth').modal('show');"
-                                        :   ( $haveEmail  ?  "$('#modalFormEmailEnter').modal('show');"  :  "addVote(1,".$post['id'].")") ?>"
-                       class="btn btn-idea-up vote-up-<?= $post["id"] ?>">
-                        <i class="fa fa-thumbs-o-up"></i></a>
-                    <a onclick="<?= Yii::$app->user->isGuest
-                                        ?   "$('#modalFormAuth').modal('show');"
-                                        :   ( $haveEmail  ?  "$('#modalFormEmailEnter').modal('show');"  :  "addVote(0,".$post['id'].")") ?>"
-                       class="btn btn-idea-down vote-down-<?= $post["id"] ?>">
-                        <i class="fa fa-thumbs-o-down"></i></a>
+<div id="news-list" class="list-view">
+    <div class="items">
 
-                    <p class="idea-status"><span class="itog">Всего:</span><span
-                            class="votes-count-<?= $post["id"] ?>"><?= $post["like"] + $post["dislike"] ?></span></p>
-                </div>
-                <div class="right-block">
+        <!---------------------------------- Idea -------------------------------------->
 
-                    <p class="idea-name"><?= $post["title"] ?></p>
+        <div class="idea-block">
+            <div class="left-block">
+                <a onclick="<?= Yii::$app->user->isGuest
+                    ?   "$('#modalFormAuth').modal('show');"
+                    :   ( $haveDummyEmail  ?  "$('#modalFormEmailEnter').modal('show');"  :  "addVote(1,".$post['id'].")") ?>"
+                   class="btn btn-idea-up vote-up-<?= $post["id"] ?>">
+                    <i class="fa fa-thumbs-o-up"></i></a>
+                <a onclick="<?= Yii::$app->user->isGuest
+                    ?   "$('#modalFormAuth').modal('show');"
+                    :   ( $haveDummyEmail  ?  "$('#modalFormEmailEnter').modal('show');"  :  "addVote(0,".$post['id'].")") ?>"
+                   class="btn btn-idea-down vote-down-<?= $post["id"] ?>">
+                    <i class="fa fa-thumbs-o-down"></i></a>
 
-                    <p class="small-p">Опубликовано: <?= $post["date_publ"] ?></p>
-
-                    <p class="small-p">Автор идеи: <span><?= $post["firstname"] ?></span></p>
-
-                    <p><?= $post["text"] ?></p>
-                    <ul class="ideas-tags list-inline">
-                        <?php
-                        $masTags = explode(",", $post["tags"]);
-                        foreach ($masTags as $tag) : ?>
-                            <li>
-                                <?= Html::a($tag , ['main/index', 'tag' => $tag]) ?>
-                            </li>
-                        <?php endforeach;?>
-                    </ul>
-                    <div class="news-date"><i class="fa fa-comments-o"></i> Комментариев: <?= $post["comments"] ?>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
+                <p class="idea-status"><span class="itog">Всего:</span><span
+                        class="votes-count-<?= $post["id"] ?>"><?= $post["like"] + $post["dislike"] ?></span></p>
             </div>
-            <!-- /Idea -->
+            <div class="right-block">
 
-            <?php if($post["comments"] > 10) : ?>
-                <br/>
-                <div class="text-center">
-                    <a class="btn btn-default" id="but-comm" title="Добавить комментарий" href="#comm">Добавить комментарий</a>
+                <p class="idea-name"><?= $post["title"] ?></p>
+
+                <p class="small-p">Опубликовано: <?= $post["date_publ"] ?></p>
+
+                <p class="small-p">Автор идеи: <span><?= $post["firstname"] ?></span></p>
+
+                <p><?= $post["text"] ?></p>
+                <ul class="ideas-tags list-inline">
+                    <?php
+                    $masTags = explode(",", $post["tags"]);
+                    foreach ($masTags as $tag) : ?>
+                        <li>
+                            <?= Html::a($tag , ['main/index', 'tag' => $tag]) ?>
+                        </li>
+                    <?php endforeach;?>
+                </ul>
+                <div class="news-date"><i class="fa fa-comments-o"></i> Комментариев: <?= $post["comments"] ?>
                 </div>
-            <?php endif; ?>
+            </div>
+            <div class="clearfix"></div>
+        </div>
 
-            <!-- Comments -->
-            <div class="comments">
-                <div id="comments-list">
+        <!---------------------------------- /Idea ------------------------------------------->
 
-                    <?php foreach ($comments as $com) : ?>
+        <?php if(!Yii::$app->user->isGuest && count($comments) > 5) : ?>
+            <br/>
+            <div class="text-center">
+                <a class="btn btn-default" id="but-comm" title="Добавить комментарий" href="#comm">Добавить комментарий</a>
+            </div>
+        <?php endif; ?>
 
-                        <div class="comment-block">
-                            <img src="/src/avatar.jpg"/>
+        <!--------------------------------------- Comments ----------------------------------->
 
-                            <div class="comment-info">
-                                <p class="small-p"><span><?= $com["firstname"] ?></span></p>
-                                <p class="small-p"><?= $com["date_created"] ?></p>
-                            </div>
+        <div class="comments">
+            <div id="comments-list">
 
-                            <div class="comment-text">
-                                <p><?= $com["text"] ?></p>
-                            </div>
+                <?php foreach ($comments as $com) : ?>
 
+                    <div class="comment-block">
+                        <img src="/src/avatar.jpg"/>
+
+                        <div class="comment-info">
+                            <p class="small-p"><span><?= $com["firstname"] ?></span></p>
+                            <p class="small-p"><?= $com["date_created"] ?></p>
                         </div>
 
-                    <?php endforeach;?>
+                        <div class="comment-text">
+                            <p><?= $com["text"] ?></p>
+                        </div>
 
-                </div>
-
-                <?php if (Yii::$app->session->hasFlash('commentAddSubmitted')): ?>
-
-                    <div class="alert alert-success text-center">
-                        Спасибо, <?= Yii::$app->user->identity->firstname ?>, комментарий успешно отправлен на модерацию...
                     </div>
 
-                <?php else : ?>
+                <?php endforeach;?>
 
-                    <br/><br/>
+            </div>
 
-                <?php endif; ?>
+            <?php if (Yii::$app->session->hasFlash('commentAddSubmitted')): ?>
 
-                <?php if (Yii::$app->user->isGuest) : ?>
+                <div class="alert alert-success text-center">
+                    Спасибо, <?= Yii::$app->user->identity->firstname ?>, комментарий успешно отправлен на модерацию...
+                </div>
 
-                    <p><strong><a href="#" onclick="$('#modalFormAuth').modal('show')">Войдите</a>, чтобы оставлять комментарии</strong>.</p>
+            <?php else : ?>
 
-                <?php else : ?>
+                <br/><br/>
 
-                    <?php $form = ActiveForm::begin(); ?>
+            <?php endif; ?>
+
+            <?php if (Yii::$app->user->isGuest) : ?>
+
+                <p><strong><a href="#" onclick="$('#modalFormAuth').modal('show')">Войдите</a>, чтобы оставлять комментарии</strong>.</p>
+
+            <?php else : ?>
+
+                <?php $form = ActiveForm::begin(); ?>
 
                     <div id="comm" class="form-group">
                         <?= $form->field($model, 'text')->textarea(['rows' => 5])?>
@@ -131,18 +134,23 @@ $haveEmail = !Yii::$app->user->isGuest ? preg_match("/[0-9]*@idea.net/", Yii::$a
                         'captchaAction' => 'main/captcha',
                     ]) ?>
 
-                    <div class="form-group submit">
-                        <input class="btn btn-default" type="submit" name="comment" value="Добавить"/>
-                    </div>
+                    <?php if ($haveDummyEmail) : ?>
+                        <a class="btn btn-default" onclick ="$('#modalFormEmailEnter').modal('show')">Добавить</a>
+                    <?php else : ?>
+                        <div class="form-group submit">
+                            <input class="btn btn-default" type="submit" name="comment" value="Добавить"/>
+                        </div>
+                    <?php endif; ?>
 
-                    <?php ActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
 
-                <?php endif;?>
-
-            </div>
-            <!-- /Comments -->
+            <?php endif;?>
 
         </div>
 
+        <!----------------------------------------- /Comments ------------------------------------->
+
     </div>
+
 </div>
+

@@ -7,41 +7,40 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Users */
 
 $this->title = $model->firstname . " " . $model->lastname;
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Пользователи', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="users-view ideas-center">
 
-    <h3><?= Html::encode($this->title) ?></h3>
+<h3><?= Html::encode($this->title) ?></h3>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'firstname',
-            'lastname',
-            'pass',
-            'salt',
-            'email:email',
-            'isAdmin',
-            'banned',
-            'age',
-            'token',
-            'auth_key',
-            'vk_id',
-            'fb_id',
-        ],
-    ]) ?>
-    <p>
-        <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+<?= DetailView::widget([
+    'model' => $model,
+    'attributes' => [
+        'id',
+        'firstname',
+        'lastname',
+        'pass',
+        'salt',
+        'email:email',
+        'isAdmin',
+        'banned',
+        'age',
+        'token',
+        'auth_key',
+        'vk_id',
+        'fb_id',
+    ],
+]) ?>
+<p>
+    <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 
-        <?php if ($model->banned) :?>
+    <?php if ($model->banned) :?>
 
         <?= Html::a('Разбанить', ['change-ban', 'id' => $model->id, 'ban' => 0], [
             'class' => 'btn btn-success',
         ]) ?>
 
-        <?php else : ?>
+    <?php else : ?>
 
         <?= Html::a('Забанить', ['change-ban', 'id' => $model->id, 'ban' => 1], [
             'class' => 'btn btn-danger',
@@ -50,8 +49,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
 
-        <?php endif; ?>
+    <?php endif; ?>
 
-    </p>
-
-</div>
+</p>
