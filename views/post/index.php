@@ -73,7 +73,7 @@ $haveDummyEmail = !Yii::$app->user->isGuest ? preg_match("/[0-9]*@idea.net/", Yi
 
         <!---------------------------------- /Idea ------------------------------------------->
 
-        <?php if(!Yii::$app->user->isGuest && count($comments) > 5) : ?>
+        <?php if(!Yii::$app->user->isGuest && !Yii::$app->user->identity->banned && count($comments) > 5) : ?>
             <br/>
             <div class="text-center">
                 <a class="btn btn-default" id="but-comm" title="Добавить комментарий" href="#comm">Добавить комментарий</a>
@@ -121,7 +121,7 @@ $haveDummyEmail = !Yii::$app->user->isGuest ? preg_match("/[0-9]*@idea.net/", Yi
 
                 <p><strong><a href="#" onclick="$('#modalFormAuth').modal('show')">Войдите</a>, чтобы оставлять комментарии</strong>.</p>
 
-            <?php else : ?>
+            <?php elseif (!Yii::$app->user->identity->banned) : ?>
 
                 <?php $form = ActiveForm::begin(); ?>
 
