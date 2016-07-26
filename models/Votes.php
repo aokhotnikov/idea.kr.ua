@@ -12,7 +12,6 @@ use Yii;
  * @property integer $user_id
  * @property integer $like_id
  *
- * @property Likes $like
  * @property Posts $post
  * @property Users $user
  */
@@ -34,7 +33,6 @@ class Votes extends \yii\db\ActiveRecord
         return [
             [['post_id', 'user_id', 'like_id'], 'required'],
             [['post_id', 'user_id', 'like_id'], 'integer'],
-            [['like_id'], 'exist', 'skipOnError' => true, 'targetClass' => Likes::className(), 'targetAttribute' => ['like_id' => 'id']],
             [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -53,13 +51,6 @@ class Votes extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getLike()
-    {
-        return $this->hasOne(Likes::className(), ['id' => 'like_id']);
-    }
 
     /**
      * @return \yii\db\ActiveQuery

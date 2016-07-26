@@ -11,9 +11,12 @@ use Yii;
  * @property string $date_created
  * @property string $text
  * @property integer $moderated
+ * @property integer $post_id
+ * @property integer $user_id
  *
- * @property CommentsPosts[] $commentsPosts
- * @property CommentsUsers[] $commentsUsers
+ * @property Posts $post
+ * @property Users $user
+ *
  */
 class Comments extends \yii\db\ActiveRecord
 {
@@ -31,10 +34,12 @@ class Comments extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['date_created', 'text'], 'required'],
+            [['date_created', 'text', 'post_id', 'user_id'], 'required'],
             [['date_created'], 'safe'],
-            [['moderated'], 'integer'],
+            [['moderated', 'post_id', 'user_id'], 'integer'],
             [['text'], 'string', 'max' => 1000],
+            [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Posts::className(), 'targetAttribute' => ['post_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -48,39 +53,36 @@ class Comments extends \yii\db\ActiveRecord
             'date_created' => 'Дата создания',
             'text' => 'Текст',
             'moderated' => 'Просмотрен',
+            'post_id' => 'Post ID',
+            'user_id' => 'User ID',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCommentsPosts()
+    public function getPost()
     {
-        return $this->hasMany(CommentsPosts::className(), ['com_id' => 'id']);
+        return $this->hasOne(Posts::className(), ['id' => 'post_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCommentsUsers()
+    public function getUser()
     {
-        return $this->hasMany(CommentsUsers::className(), ['com_id' => 'id']);
+        return $this->hasOne(Users::className(), ['id' => 'user_id']);
     }
+
 
     public function insertRecord($text, $post_id){
         $this->text = $text;
 
         $formatter = Yii::$app->formatter;
         $this->date_created = $formatter->asDate('now', 'Y-MM-dd H:i:s');
+        $this->post_id = $post_id;
+        $this->user_id = Yii::$app->user->identity->getId();
 
-        if ($this->save()){
-            $modelCommentsPosts = new CommentsPosts(); // добавляю связки в таблицу "Comments_posts"
-            $modelCommentsUsers = new CommentsUsers(); // добавляю связки в таблицу "Comments_users"
-            if ($modelCommentsPosts->insertRecord($this->id, $post_id) &&
-                $modelCommentsUsers->insertRecord($this->id, Yii::$app->user->identity->getId())) {
-                return true;
-            }
-        }
-        return false;
+        return $this->save() ? true : false;
     }
 }

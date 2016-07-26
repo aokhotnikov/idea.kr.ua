@@ -170,9 +170,8 @@ class MainController extends Controller
     {
         $query = (new Query())
             ->select(['p.*', 'u.firstname', "GROUP_CONCAT(DISTINCT t.name ORDER BY t.name ASC SEPARATOR ',') as tags",
-                     "(SELECT count(*) FROM comments_posts cp
-		               LEFT JOIN comments c ON c.id = cp.com_id
-		               WHERE cp.post_id = p.id AND c.moderated = 1) as comments", '(p.like - p.dislike) as rating'])
+                     "(SELECT count(*) FROM comments c
+		               WHERE c.post_id = p.id AND c.moderated = 1) as comments", '(p.like - p.dislike) as rating'])
             ->from('users u, posts p, tags t, tags_posts tp')
             ->where('p.user_id = u.id and p.id = tp.post_id and t.id = tp.tag_id')
             ->andWhere('p.status = "isApproved"')

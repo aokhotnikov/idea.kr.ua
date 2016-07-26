@@ -29,20 +29,17 @@ class PostController extends \yii\web\Controller
 
             $post = Yii::$app->db->createCommand('
                 SELECT p.*, u.firstname, GROUP_CONCAT(t.name ORDER BY t.name ASC SEPARATOR ",") AS tags,
-                      (SELECT count(*) FROM comments_posts cp
-		               LEFT JOIN comments c ON c.id = cp.com_id
-		               WHERE cp.post_id = p.id AND c.moderated = 1) AS comments
+                      (SELECT count(*) FROM comments c
+		               WHERE c.post_id = p.id AND c.moderated = 1) AS comments
                 FROM users u, posts p, tags t, tags_posts tp
                 WHERE p.user_id = u.id AND p.id = tp.post_id AND t.id = tp.tag_id AND p.id = :id')->bindValue(':id', $id)->queryOne();
 
             //echo '<pre>';print_r($post);echo '</pre>';die; // for debag
 
             $comments = Yii::$app->db->createCommand('
-                SELECT c.*, u.firstname FROM comments c
-                LEFT JOIN comments_posts cp ON c.id = cp.com_id
-                LEFT JOIN comments_users cu ON c.id = cu.com_id
-                LEFT JOIN users u ON cu.user_id = u.id
-                WHERE moderated = 1 AND post_id = :id')->bindValue(':id', $id)->queryAll();
+                SELECT c.*, u.firstname FROM comments c, users u
+                WHERE c.user_id = u.id AND moderated = 1 AND post_id = :id
+                ORDER BY c.date_created')->bindValue(':id', $id)->queryAll();
 
             return $this->render('index', ['post' => $post, 'comments' => $comments, 'model' => $model]);
         }

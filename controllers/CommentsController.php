@@ -50,8 +50,9 @@ class CommentsController extends Controller
     {
         $query = Comments::find()
             ->select('id, date_created, text')
-            ->where('moderated ='.$sort)
-            ->orderBy('date_created desc');
+            ->where('moderated ='.$sort);
+
+        $query->addOrderBy($sort ? 'date_created desc' : 'date_created');
 
         $provider = new ActiveDataProvider([
             'query' => $query,

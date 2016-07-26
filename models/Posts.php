@@ -16,11 +16,10 @@ use yii\helpers\ArrayHelper;
  * @property integer $user_id
  * @property integer $like
  * @property integer $dislike
- * @property integer $comments
  * @property string $text
  * @property integer $completed
  *
- * @property CommentsPosts[] $commentsPosts
+ * @property Comments[] $comments
  * @property Users $user
  * @property TagsPosts[] $tagsPosts
  * @property Votes[] $votes
@@ -74,12 +73,13 @@ class Posts extends \yii\db\ActiveRecord
         ];
     }
 
+
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCommentsPosts()
+    public function getComments()
     {
-        return $this->hasMany(CommentsPosts::className(), ['post_id' => 'id']);
+        return $this->hasMany(Comments::className(), ['post_id' => 'id']);
     }
 
     /**
